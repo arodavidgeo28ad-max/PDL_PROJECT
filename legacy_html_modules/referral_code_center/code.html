@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Permanent Referral Code Generator | StressSync Mentor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-highest": "#2d3449",
+                        "tertiary-container": "#ff516a",
+                        "surface-tint": "#c0c1ff",
+                        "outline-variant": "#464554",
+                        "on-primary-container": "#0d0096",
+                        "inverse-primary": "#494bd6",
+                        "on-tertiary": "#67001b",
+                        "surface-container-high": "#222a3d",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "tertiary-fixed": "#ffdadb",
+                        "surface-container-lowest": "#060e20",
+                        "outline": "#908fa0",
+                        "on-primary": "#1000a9",
+                        "tertiary-fixed-dim": "#ffb2b7",
+                        "secondary": "#4fdbc8",
+                        "on-secondary-fixed-variant": "#005048",
+                        "surface-variant": "#2d3449",
+                        "primary": "#c0c1ff",
+                        "on-tertiary-fixed": "#40000d",
+                        "on-secondary": "#003731",
+                        "on-background": "#dae2fd",
+                        "inverse-on-surface": "#283044",
+                        "surface-bright": "#31394d",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "surface-dim": "#0b1326",
+                        "on-primary-fixed": "#07006c",
+                        "secondary-container": "#04b4a2",
+                        "on-secondary-fixed": "#00201c",
+                        "tertiary": "#ffb2b7",
+                        "surface-container-low": "#131b2e",
+                        "secondary-fixed-dim": "#4fdbc8",
+                        "on-tertiary-container": "#5b0017",
+                        "surface-container": "#171f33",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#dae2fd",
+                        "surface": "#0b1326",
+                        "secondary-fixed": "#71f8e4",
+                        "on-surface": "#dae2fd",
+                        "on-secondary-container": "#003f38",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "primary-fixed": "#e1e0ff",
+                        "background": "#0b1326",
+                        "primary-container": "#8083ff",
+                        "on-surface-variant": "#c7c4d7",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#92002a"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(45, 52, 73, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .signature-glow {
+            background: linear-gradient(135deg, #c0c1ff 0%, #8083ff 100%);
+        }
+        .ambient-halo {
+            background: radial-gradient(circle at center, rgba(79, 219, 200, 0.15) 0%, transparent 70%);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30 selection:text-primary min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 z-50 w-full bg-[#171f33] shadow-[0_32px_64px_rgba(192,193,255,0.06)] px-8 py-4 flex justify-between items-center">
+<div class="flex items-center gap-4">
+<span class="text-2xl font-bold tracking-tight text-[#c0c1ff] font-['Plus_Jakarta_Sans']">StressSync Mentor</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-[#c7c4d7] hover:bg-[#2d3449] px-3 py-2 rounded-lg transition-colors duration-300 font-['Plus_Jakarta_Sans']" href="#">Dashboard</a>
+<a class="text-[#c7c4d7] hover:bg-[#2d3449] px-3 py-2 rounded-lg transition-colors duration-300 font-['Plus_Jakarta_Sans']" href="#">Appointments</a>
+<a class="text-[#c0c1ff] font-bold font-['Plus_Jakarta_Sans']" href="#">Referral Generator</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#c7c4d7] hover:bg-[#2d3449] p-2 rounded-full transition-colors duration-300">notifications</button>
+<button class="material-symbols-outlined text-[#c7c4d7] hover:bg-[#2d3449] p-2 rounded-full transition-colors duration-300">settings</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center border border-outline-variant/15 overflow-hidden">
+<img alt="Mentor Profile Avatar" class="w-full h-full object-cover" data-alt="Professional headshot of a mentor in a clean medical coat with a supportive smile, studio lighting, high resolution" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2YbMdnxks-YP09ofeXTofum0YWdbeJ6Acx6uVkizos9J7srFr8ZiP5dWRnTbUmSdtyScrwAqSqpMNQuZM1EspEaO47_tX-A2tWekXZ80lMhF0u28shroRWBT5iupumgwxbaDTyUj0oGMtXeae6reRDfj1rSPIVP5NWsxG7YlxWrxoClaDx9jG9XvPt1TPIUnwd8qn1NE8I28kbYah0G1hwLsBEEg1tSB5VZeXUZ6cL3afo4rQG8jr3zGsHRC-LRR4SfvL-QfIELIJ"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-screen fixed left-0 top-0 pt-24 pb-8 w-72 bg-[#171f33] z-40">
+<div class="px-6 mb-8">
+<h2 class="font-['Plus_Jakarta_Sans'] font-extrabold text-[#c0c1ff] text-lg">Luminescent Sanctuary</h2>
+<p class="text-xs text-[#c7c4d7] opacity-70 tracking-widest uppercase mt-1">Mentor Portal</p>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-4 px-6 py-3 text-[#c7c4d7] opacity-70 hover:text-[#4fdbc8] hover:bg-[#222a3d] transition-all duration-200 active:translate-x-1" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-['Inter'] text-sm tracking-wide">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-[#c7c4d7] opacity-70 hover:text-[#4fdbc8] hover:bg-[#222a3d] transition-all duration-200 active:translate-x-1" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-['Inter'] text-sm tracking-wide">Appointments</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-[#c7c4d7] opacity-70 hover:text-[#4fdbc8] hover:bg-[#222a3d] transition-all duration-200 active:translate-x-1" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-['Inter'] text-sm tracking-wide">Students</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-[#c7c4d7] opacity-70 hover:text-[#4fdbc8] hover:bg-[#222a3d] transition-all duration-200 active:translate-x-1" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-['Inter'] text-sm tracking-wide">Chat</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-[#c0c1ff] border-r-4 border-[#c0c1ff] bg-gradient-to-r from-[#c0c1ff1a] to-transparent active:translate-x-1" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-['Inter'] text-sm tracking-wide">Referral Generator</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-[#c7c4d7] opacity-70 hover:text-[#4fdbc8] hover:bg-[#222a3d] transition-all duration-200 active:translate-x-1" href="#">
+<span class="material-symbols-outlined">emergency_home</span>
+<span class="font-['Inter'] text-sm tracking-wide">Alerts</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-br from-[#c0c1ff] to-[#8083ff] text-on-primary-container font-bold rounded-xl shadow-lg hover:shadow-primary/20 transition-all duration-300">
+<span class="material-symbols-outlined">add</span>
+                New Referral
+            </button>
+<div class="mt-6 flex flex-col gap-1 border-t border-outline-variant/10 pt-6">
+<a class="flex items-center gap-4 px-2 py-2 text-[#c7c4d7] opacity-70 hover:text-[#4fdbc8] transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm">help</span>
+<span class="text-xs">Help Center</span>
+</a>
+<a class="flex items-center gap-4 px-2 py-2 text-[#c7c4d7] opacity-70 hover:text-[#ffb2b7] transition-all duration-200" href="#">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span class="text-xs">Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="md:ml-72 pt-32 pb-20 px-4 md:px-12 min-h-screen relative overflow-hidden">
+<!-- Ambient background element -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] ambient-halo -z-10 pointer-events-none"></div>
+<div class="max-w-4xl mx-auto">
+<!-- Header Section -->
+<div class="mb-12">
+<span class="text-outline uppercase tracking-[0.2em] font-label font-semibold text-[10px] mb-2 block">Institutional Access</span>
+<h1 class="font-headline font-bold text-4xl md:text-5xl text-on-surface leading-tight">Permanent Referral Code</h1>
+<p class="text-on-surface-variant text-lg mt-4 max-w-2xl leading-relaxed">
+                    Grant students immediate access to the Luminescent Sanctuary. This code remains unique to your practice and never expires.
+                </p>
+</div>
+<!-- Main Referral Card -->
+<div class="relative group">
+<div class="absolute inset-0 bg-primary/5 blur-3xl rounded-3xl -z-10 group-hover:bg-primary/10 transition-colors duration-500"></div>
+<div class="glass-panel border border-outline-variant/15 rounded-3xl p-8 md:p-12 flex flex-col items-center text-center shadow-[0_32px_64px_rgba(192,193,255,0.06)]">
+<div class="mb-8">
+<div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-surface-container-high border border-outline-variant/20 text-secondary mb-4">
+<span class="material-symbols-outlined text-3xl">verified</span>
+</div>
+<h3 class="text-on-surface-variant font-label text-sm font-medium uppercase tracking-widest">Your Unique Mentor Code</h3>
+</div>
+<div class="mb-10 w-full max-w-md bg-surface-container-lowest/50 border border-outline-variant/10 rounded-2xl py-8 px-4 flex flex-col items-center justify-center relative">
+<span class="text-5xl md:text-6xl font-headline font-extrabold tracking-tighter text-on-surface select-all">SS-MENT-4921</span>
+<div class="mt-4 text-secondary text-xs font-label flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                            Verified Institution Code
+                        </div>
+</div>
+<div class="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+<button class="flex-1 signature-glow text-on-primary-container font-headline font-bold py-4 px-8 rounded-xl flex items-center justify-center gap-3 hover:shadow-[0_0_30px_rgba(192,193,255,0.3)] hover:scale-[1.02] active:scale-95 transition-all duration-300">
+<span class="material-symbols-outlined">content_copy</span>
+                            Copy Code
+                        </button>
+</div>
+<div class="mt-12 grid grid-cols-2 gap-4 w-full border-t border-outline-variant/10 pt-10">
+<button class="flex flex-col items-center gap-3 p-4 rounded-2xl hover:bg-surface-container-high transition-colors duration-300 group">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant/10 group-hover:border-secondary/50 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">mail</span>
+</div>
+<span class="text-sm font-medium">Email Code</span>
+</button>
+<button class="flex flex-col items-center gap-3 p-4 rounded-2xl hover:bg-surface-container-high transition-colors duration-300 group">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant/10 group-hover:border-secondary/50 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">qr_code_2</span>
+</div>
+<span class="text-sm font-medium">Generate QR</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Instructions Bento Section -->
+<div class="mt-16 grid md:grid-cols-3 gap-6">
+<div class="md:col-span-2 glass-panel border border-outline-variant/15 rounded-3xl p-8 flex flex-col justify-between">
+<div>
+<h4 class="font-headline font-bold text-xl mb-4">How students join</h4>
+<ul class="space-y-6">
+<li class="flex gap-4">
+<span class="flex-shrink-0 w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant/20 flex items-center justify-center text-primary font-bold text-sm">1</span>
+<p class="text-on-surface-variant leading-relaxed">Students download the StressSync app and navigate to the <b>Sign Up</b> screen.</p>
+</li>
+<li class="flex gap-4">
+<span class="flex-shrink-0 w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant/20 flex items-center justify-center text-primary font-bold text-sm">2</span>
+<p class="text-on-surface-variant leading-relaxed">In the "Institution Referral" field, they enter your unique code: <b>SS-MENT-4921</b>.</p>
+</li>
+<li class="flex gap-4">
+<span class="flex-shrink-0 w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant/20 flex items-center justify-center text-primary font-bold text-sm">3</span>
+<p class="text-on-surface-variant leading-relaxed">The system automatically links them to your dashboard for <b>mentorship and support</b>.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="bg-surface-container-high border border-outline-variant/15 rounded-3xl p-8 relative overflow-hidden group">
+<div class="relative z-10">
+<div class="w-12 h-12 rounded-xl bg-tertiary/10 border border-tertiary/20 flex items-center justify-center text-tertiary mb-6">
+<span class="material-symbols-outlined">security</span>
+</div>
+<h4 class="font-headline font-bold text-xl mb-3">Institutional Privacy</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">
+                            This code is tied to your mentor ID. Only share this with students within your authorized cohort.
+                        </p>
+</div>
+<!-- Decorative abstract icon -->
+<span class="material-symbols-outlined absolute -bottom-10 -right-10 text-[180px] text-on-surface/5 select-none pointer-events-none group-hover:text-primary/10 transition-colors duration-500">lock</span>
+</div>
+</div>
+<!-- Footer Stats -->
+<div class="mt-8 flex flex-col md:flex-row items-center justify-between gap-6 px-4">
+<div class="flex items-center gap-6">
+<div class="flex flex-col">
+<span class="text-outline text-[10px] uppercase font-bold tracking-widest">Total Onboarded</span>
+<span class="text-2xl font-headline font-bold">142</span>
+</div>
+<div class="w-px h-8 bg-outline-variant/20 hidden md:block"></div>
+<div class="flex flex-col">
+<span class="text-outline text-[10px] uppercase font-bold tracking-widest">Active Mentorships</span>
+<span class="text-2xl font-headline font-bold">89</span>
+</div>
+</div>
+<p class="text-xs text-on-surface-variant opacity-60 text-center md:text-right">
+                    Last referral activity: 2 hours ago via Mobile Web.
+                </p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-[#171f33] border-t border-outline-variant/15 px-6 py-4 flex justify-between items-center z-50">
+<button class="flex flex-col items-center gap-1 text-[#c7c4d7] opacity-70">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-[10px]">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-[#c7c4d7] opacity-70">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-[10px]">Appts</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-[#c0c1ff] font-bold">
+<span class="material-symbols-outlined">description</span>
+<span class="text-[10px]">Referral</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-[#c7c4d7] opacity-70">
+<span class="material-symbols-outlined">forum</span>
+<span class="text-[10px]">Chat</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-[#c7c4d7] opacity-70">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px]">Profile</span>
+</button>
+</nav>
+</body></html>

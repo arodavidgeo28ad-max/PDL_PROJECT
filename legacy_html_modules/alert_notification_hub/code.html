@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Alert Center | StressSync Mentor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0b1326;
+            color: #dae2fd;
+        }
+        .headline-font { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(45, 52, 73, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .unread-glow {
+            box-shadow: 0 0 20px rgba(192, 193, 255, 0.08);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0b1326; }
+        ::-webkit-scrollbar-thumb { background: #2d3449; border-radius: 10px; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-highest": "#2d3449",
+                        "tertiary-container": "#ff516a",
+                        "surface-tint": "#c0c1ff",
+                        "outline-variant": "#464554",
+                        "on-primary-container": "#0d0096",
+                        "inverse-primary": "#494bd6",
+                        "on-tertiary": "#67001b",
+                        "surface-container-high": "#222a3d",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "tertiary-fixed": "#ffdadb",
+                        "surface-container-lowest": "#060e20",
+                        "outline": "#908fa0",
+                        "on-primary": "#1000a9",
+                        "tertiary-fixed-dim": "#ffb2b7",
+                        "secondary": "#4fdbc8",
+                        "on-secondary-fixed-variant": "#005048",
+                        "surface-variant": "#2d3449",
+                        "primary": "#c0c1ff",
+                        "on-tertiary-fixed": "#40000d",
+                        "on-secondary": "#003731",
+                        "on-background": "#dae2fd",
+                        "inverse-on-surface": "#283044",
+                        "surface-bright": "#31394d",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "surface-dim": "#0b1326",
+                        "on-primary-fixed": "#07006c",
+                        "secondary-container": "#04b4a2",
+                        "on-secondary-fixed": "#00201c",
+                        "tertiary": "#ffb2b7",
+                        "surface-container-low": "#131b2e",
+                        "secondary-fixed-dim": "#4fdbc8",
+                        "on-tertiary-container": "#5b0017",
+                        "surface-container": "#171f33",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#dae2fd",
+                        "surface": "#0b1326",
+                        "secondary-fixed": "#71f8e4",
+                        "on-surface": "#dae2fd",
+                        "on-secondary-container": "#003f38",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "primary-fixed": "#e1e0ff",
+                        "background": "#0b1326",
+                        "primary-container": "#8083ff",
+                        "on-surface-variant": "#c7c4d7",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#92002a"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface selection:bg-primary/30">
+<!-- TopAppBar -->
+<header class="bg-[#0b1326] dark:bg-[#0b1326] docked full-width top-0 z-50 no-border bg-[#171f33] shadow-[0_32px_64px_rgba(192,193,255,0.06)] fixed w-full">
+<div class="flex justify-between items-center w-full px-8 py-4">
+<div class="flex items-center gap-4">
+<span class="text-2xl font-bold tracking-tight text-[#c0c1ff] font-['Plus_Jakarta_Sans']">StressSync Mentor</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center gap-8 mr-8">
+<button class="text-[#c7c4d7] hover:bg-[#2d3449] transition-colors duration-300 px-3 py-1 rounded-lg">Dashboard</button>
+<button class="text-[#c7c4d7] hover:bg-[#2d3449] transition-colors duration-300 px-3 py-1 rounded-lg">Students</button>
+<button class="text-[#c0c1ff] font-bold px-3 py-1 rounded-lg">Alerts</button>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#c7c4d7] hover:bg-[#2d3449] p-2 rounded-full transition-colors">notifications</button>
+<button class="material-symbols-outlined text-[#c7c4d7] hover:bg-[#2d3449] p-2 rounded-full transition-colors">settings</button>
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant/20 flex items-center justify-center overflow-hidden">
+<img alt="Mentor Profile Avatar" class="w-full h-full object-cover" data-alt="professional portrait of a clinical psychologist in a soft lit office with calming blue and purple tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO5lsXfqwwxki-nm6y43VzkLDbuQw1cb-Ng1FsTW3YwqcfhnJ4wXqZZr166lrWG1B0oqoUUk6CDf_g8xOU5ACKNpTx2M5DJKJA5FvkgfvUR6x1Qjuj-umbmwHJ5zGWM-Z_pr2QwPvkHygkEkihZQ72kiV12uy9JERIA5CFBBZ_URYekn_2un8J76LRHgZ0F_kgJ1-Go-gB3vVdb4vGBrEUh35X6QMMZqiV3GsbtbJLsQJgDVUxwtwijFDGfbRhW9GjPf-z-CKlbfto"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="bg-[#171f33] dark:bg-[#171f33] font-['Inter'] text-sm tracking-wide docked left-0 h-full w-72 flex flex-col h-screen fixed left-0 top-0 pt-20 pb-8 hidden lg:flex">
+<div class="px-6 mb-10">
+<h2 class="font-['Plus_Jakarta_Sans'] font-extrabold text-[#c0c1ff] text-xl">Luminescent Sanctuary</h2>
+<p class="text-[#c7c4d7] opacity-60 text-xs">Mentor Portal</p>
+</div>
+<nav class="flex-1 space-y-1 px-4">
+<a class="flex items-center gap-4 px-4 py-3 text-[#c7c4d7] opacity-70 hover:text-[#4fdbc8] hover:bg-[#222a3d] transition-all duration-200 active:translate-x-1 rounded-xl" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#c7c4d7] opacity-70 hover:text-[#4fdbc8] hover:bg-[#222a3d] transition-all duration-200 active:translate-x-1 rounded-xl" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span>Appointments</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#c7c4d7] opacity-70 hover:text-[#4fdbc8] hover:bg-[#222a3d] transition-all duration-200 active:translate-x-1 rounded-xl" href="#">
+<span class="material-symbols-outlined">group</span>
+<span>Students</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#c7c4d7] opacity-70 hover:text-[#4fdbc8] hover:bg-[#222a3d] transition-all duration-200 active:translate-x-1 rounded-xl" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span>Chat</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#c7c4d7] opacity-70 hover:text-[#4fdbc8] hover:bg-[#222a3d] transition-all duration-200 active:translate-x-1 rounded-xl" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Referral Generator</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#c0c1ff] border-r-4 border-[#c0c1ff] bg-gradient-to-r from-[#c0c1ff1a] to-transparent transition-all duration-200 active:translate-x-1 rounded-l-xl" href="#">
+<span class="material-symbols-outlined">emergency_home</span>
+<span class="font-bold">Alerts</span>
+</a>
+</nav>
+<div class="px-6 mt-6">
+<button class="w-full py-3 bg-gradient-to-br from-primary to-primary-container text-on-primary-container font-bold rounded-xl shadow-lg hover:brightness-110 transition-all active:scale-95">
+                New Referral
+            </button>
+</div>
+<div class="mt-auto px-4 space-y-1">
+<a class="flex items-center gap-4 px-4 py-3 text-[#c7c4d7] opacity-70 hover:text-[#4fdbc8] transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Help Center</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-[#c7c4d7] opacity-70 hover:text-[#4fdbc8] transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-72 pt-24 px-4 md:px-8 pb-12">
+<div class="max-w-6xl mx-auto">
+<!-- Header Section -->
+<header class="mb-12">
+<span class="label-md uppercase text-outline tracking-[0.2em] font-medium block mb-2">Message &amp; Notifications</span>
+<h1 class="headline-font text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight">Alert Center</h1>
+</header>
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-10 items-start">
+<!-- Filters & Stats (Asymmetrical Sidebar) -->
+<aside class="xl:col-span-3 space-y-6">
+<div class="bg-surface-container rounded-2xl p-6 border border-outline-variant/10">
+<h3 class="headline-font text-sm font-bold text-primary mb-4">NOTIFICATION SUMMARY</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-sm">Critical Alerts</span>
+<span class="bg-tertiary/20 text-tertiary px-2 py-0.5 rounded text-xs font-bold">03</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-sm">Meeting Requests</span>
+<span class="bg-secondary/20 text-secondary px-2 py-0.5 rounded text-xs font-bold">05</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant text-sm">New Messages</span>
+<span class="bg-primary/20 text-primary px-2 py-0.5 rounded text-xs font-bold">12</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-2xl p-6 border border-outline-variant/5">
+<h3 class="headline-font text-sm font-bold text-on-surface-variant mb-4">FILTER CATEGORIES</h3>
+<div class="space-y-2">
+<button class="w-full flex items-center gap-3 px-3 py-2 bg-surface-container-highest rounded-lg text-primary text-sm font-medium">
+<span class="material-symbols-outlined text-sm">all_inbox</span> All Feed
+                            </button>
+<button class="w-full flex items-center gap-3 px-3 py-2 hover:bg-surface-container-highest/50 rounded-lg text-on-surface-variant text-sm transition-colors">
+<span class="material-symbols-outlined text-sm">warning</span> High Stress
+                            </button>
+<button class="w-full flex items-center gap-3 px-3 py-2 hover:bg-surface-container-highest/50 rounded-lg text-on-surface-variant text-sm transition-colors">
+<span class="material-symbols-outlined text-sm">event_repeat</span> Requests
+                            </button>
+<button class="w-full flex items-center gap-3 px-3 py-2 hover:bg-surface-container-highest/50 rounded-lg text-on-surface-variant text-sm transition-colors">
+<span class="material-symbols-outlined text-sm">chat_bubble</span> Messages
+                            </button>
+</div>
+</div>
+</aside>
+<!-- Feed Section -->
+<section class="xl:col-span-9 space-y-12">
+<!-- High Stress Alerts -->
+<div>
+<div class="flex items-center gap-4 mb-6">
+<h2 class="headline-font text-xl font-bold">High Stress Alerts</h2>
+<div class="h-px flex-1 bg-gradient-to-r from-tertiary/30 to-transparent"></div>
+</div>
+<div class="space-y-4">
+<!-- Alert Card 1 -->
+<div class="glass-card unread-glow p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-6 border-l-4 border-tertiary">
+<div class="flex gap-5">
+<div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center text-tertiary flex-shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">error</span>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<h4 class="font-bold text-on-surface">Elena Rodriguez</h4>
+<span class="text-xs text-outline">• 4m ago</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">System detected a 42% spike in cortisol-linked biometric data during final exams prep.</p>
+</div>
+</div>
+<div class="flex items-center gap-3 self-end md:self-center">
+<button class="px-5 py-2 rounded-xl text-sm font-bold text-tertiary-fixed-dim hover:bg-tertiary/10 transition-colors">Dismiss</button>
+<button class="px-5 py-2 bg-tertiary-container text-white rounded-xl text-sm font-bold shadow-lg shadow-tertiary/20 hover:brightness-110 active:scale-95 transition-all">View Student</button>
+</div>
+</div>
+<!-- Alert Card 2 -->
+<div class="bg-surface-container-high p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-6 opacity-90">
+<div class="flex gap-5">
+<div class="w-12 h-12 rounded-full bg-tertiary/10 flex items-center justify-center text-tertiary flex-shrink-0">
+<span class="material-symbols-outlined">trending_up</span>
+</div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<h4 class="font-bold text-on-surface">Marcus Chen</h4>
+<span class="text-xs text-outline">• 1h ago</span>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">Persistent sleep deprivation (avg. 3.2hrs) noted over the last 72 hours.</p>
+</div>
+</div>
+<div class="flex items-center gap-3 self-end md:self-center">
+<button class="px-5 py-2 bg-surface-container-highest text-on-surface rounded-xl text-sm font-bold hover:bg-surface-bright transition-all">View Student</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Meeting Requests -->
+<div>
+<div class="flex items-center gap-4 mb-6">
+<h2 class="headline-font text-xl font-bold">New Meeting Requests</h2>
+<div class="h-px flex-1 bg-gradient-to-r from-secondary/30 to-transparent"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Request Card 1 -->
+<div class="bg-surface-container rounded-2xl p-5 border border-outline-variant/5 hover:border-secondary/30 transition-all group">
+<div class="flex items-start justify-between mb-4">
+<div class="flex items-center gap-3">
+<img alt="Student Avatar" class="w-10 h-10 rounded-full bg-surface-bright object-cover" data-alt="close up headshot of a young male student with glasses in a soft library setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPNgWwIhXYaPvI-f31roWOjQCq_G3kxvl8Cl4OOS7labxtOEvLrRj-f7630Krv7SUiKHAUth3sXAvRB8-1YrVNPmIUIjQiwuSRxwCh4KRXmy55AcQWHuAnXU0KsXbo5etd07Ekm_uO0wfl8ao8i32nMZkVYneorfOzhucHUHrbbuwjFnSRzDzem7prYkH2AoOqy-S4Z3GxQGkwBFYhWit4efot_MHvYA1JplWN28ro38DD_Y9dDdSCu6O_cnDjg7I4N6-ObyGuL_hT"/>
+<div>
+<h4 class="text-sm font-bold text-on-surface">Sarah Jenkins</h4>
+<p class="text-[10px] text-outline uppercase tracking-wider">Urgent Consultation</p>
+</div>
+</div>
+<span class="text-[10px] text-on-secondary bg-secondary/80 px-2 py-0.5 rounded-full font-bold">NEW</span>
+</div>
+<div class="bg-surface-dim rounded-xl p-3 mb-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-lg">calendar_month</span>
+<div>
+<p class="text-xs text-on-surface">Tomorrow, Oct 14</p>
+<p class="text-[10px] text-outline">10:30 AM — 11:15 AM</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-2 bg-surface-container-highest text-on-surface-variant rounded-lg text-xs font-bold hover:text-on-surface transition-colors">Reschedule</button>
+<button class="flex-1 py-2 bg-secondary text-on-secondary rounded-lg text-xs font-bold hover:brightness-105 transition-all">Accept Request</button>
+</div>
+</div>
+<!-- Request Card 2 -->
+<div class="bg-surface-container rounded-2xl p-5 border border-outline-variant/5 hover:border-secondary/30 transition-all">
+<div class="flex items-start justify-between mb-4">
+<div class="flex items-center gap-3">
+<img alt="Student Avatar" class="w-10 h-10 rounded-full bg-surface-bright object-cover" data-alt="profile photo of a diverse young female student smiling in an outdoor campus setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAy0mLsIoAWSJqdsXWeUeB7DsDB5KEPrWOEDUejCAJ08Z8BNDvnB1YeQi3h5WLr8Y_zGSg7flHGqFVs157Xh2b_mobKP55aK--07-8P-LyxD2cD2G2p8b9Hst9xld_olbiNM8laAoxE2LIwFj1H1AJk0Tb7E6nclxwkUDkaNOJ6hhMZGUaqFvuJjhlwIIZvPLMgWxdy1UzZ7-_5oQqPhZhkhBHOESjtBB7IbUyeX2bX1_y-dEj1HGDxyYUl_QIT7vpoSxMZvJqywKJE"/>
+<div>
+<h4 class="text-sm font-bold text-on-surface">Jordan Vane</h4>
+<p class="text-[10px] text-outline uppercase tracking-wider">Regular Check-in</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-dim rounded-xl p-3 mb-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary text-lg">calendar_month</span>
+<div>
+<p class="text-xs text-on-surface">Wednesday, Oct 16</p>
+<p class="text-[10px] text-outline">02:00 PM — 02:30 PM</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-2 bg-surface-container-highest text-on-surface-variant rounded-lg text-xs font-bold hover:text-on-surface transition-colors">Reschedule</button>
+<button class="flex-1 py-2 bg-secondary text-on-secondary rounded-lg text-xs font-bold hover:brightness-105 transition-all">Accept Request</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Student Messages -->
+<div>
+<div class="flex items-center gap-4 mb-6">
+<h2 class="headline-font text-xl font-bold">Student Messages</h2>
+<div class="h-px flex-1 bg-gradient-to-r from-primary/30 to-transparent"></div>
+</div>
+<div class="bg-surface-container-low rounded-3xl overflow-hidden border border-outline-variant/10">
+<!-- Message 1 -->
+<div class="p-6 border-b border-outline-variant/5 hover:bg-surface-container-high/50 transition-colors cursor-pointer group">
+<div class="flex gap-6">
+<div class="relative">
+<img alt="Avatar" class="w-12 h-12 rounded-2xl object-cover" data-alt="close up portrait of a young male student looking thoughtful with soft artistic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwBPJl5vh2UPPaQ-dAA_X7pxfyiNgQFljfT-_oaqFcK4PVdJk9WHAWumnKIh_D5Bg7lpAp2g7MtX_zDRFI9lAVDg22LT1gNjOPtKDKjO8a4wj0VF23JgC6ZV7Mz8yJiufCzI7UZdTujxpGvNsR-QnbM4NykLS0dtDrIyGoD1ua9z8A2mvLhsFr-3SzF-Pu0t4XNVtGcSsCTFgTtCjj1crjRxoOTrayFOH945JRS-Xy3yYzymxWs6tggtlvfoRI_EYvQe1a_tQ6GsZu"/>
+<div class="absolute -bottom-1 -right-1 w-4 h-4 bg-secondary border-2 border-surface-container-low rounded-full"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-bold text-on-surface group-hover:text-primary transition-colors">Alex Thompson</h4>
+<span class="text-xs text-outline">2:15 PM</span>
+</div>
+<p class="text-sm text-on-surface-variant line-clamp-1 mb-2">"Thanks for the session today. The breathing techniques you suggested really helped during my physics quiz..."</p>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-primary/10 text-primary text-[10px] font-bold">ACADEMIC STRESS</span>
+<span class="px-2 py-0.5 rounded bg-surface-container-highest text-outline text-[10px]">REPLY PENDING</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Message 2 -->
+<div class="p-6 border-b border-outline-variant/5 hover:bg-surface-container-high/50 transition-colors cursor-pointer">
+<div class="flex gap-6">
+<div class="relative">
+<img alt="Avatar" class="w-12 h-12 rounded-2xl object-cover" data-alt="portrait of a young female student with colorful hair in a creative studio environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA82mpS-yhpS_eYLl-5uZlMN88TAsRR6VNrUNifyNJoddNkVXYsOf84gzF7FzvCMkogBf-Me2ZZJm-sMBVMEO5uL1l5rlqcLTr9pzll46_buM_64c5eCsf-yKQBiFuspsULCveDRnjShFU_BGmlGWP5pWmAqxs0jfTtUFpLrh0fOfzja8NXXrz5bjwGp99aIJ2zeauHAQdl41ZiLy3aJSWgaik_i5WkCyp5dna9TCiU2iR1unBdMNS-ySlNlLo0ur4DaNWoBn9wanAK"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-1">
+<h4 class="font-bold text-on-surface">Lila Thorne</h4>
+<span class="text-xs text-outline">Yesterday</span>
+</div>
+<p class="text-sm text-on-surface-variant line-clamp-1 mb-2">"Is it possible to move our Friday appointment to Monday? I have a family event coming up..."</p>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-secondary/10 text-secondary text-[10px] font-bold">LOGISTICS</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full py-4 text-center text-sm font-bold text-primary hover:bg-primary/5 transition-colors">
+                                View All Messages
+                            </button>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-[#171f33] flex justify-around items-center py-3 px-4 z-50">
+<button class="flex flex-col items-center gap-1 text-[#c7c4d7]">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-[10px]">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-[#c7c4d7]">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px]">Students</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-[#c0c1ff]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emergency_home</span>
+<span class="text-[10px] font-bold">Alerts</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-[#c7c4d7]">
+<span class="material-symbols-outlined">forum</span>
+<span class="text-[10px]">Chat</span>
+</button>
+</nav>
+</body></html>

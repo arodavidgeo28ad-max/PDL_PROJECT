@@ -1,0 +1,1480 @@
+{
+  "settings": {
+    "languages": [
+      "en"
+    ],
+    "forceNER": true,
+    "tag": "nlp",
+    "threshold": 0.5,
+    "autoLoad": true,
+    "autoSave": true,
+    "modelFileName": "model.nlp",
+    "executeActionsBeforeAnswers": false,
+    "calculateSentiment": true
+  },
+  "nluManager": {
+    "settings": {
+      "tag": "nlu-manager"
+    },
+    "locales": [
+      "en"
+    ],
+    "languageNames": {},
+    "domainManagers": {
+      "en": {
+        "settings": {
+          "locale": "en",
+          "trainByDomain": false,
+          "tag": "domain-manager-en",
+          "nluByDomain": {
+            "default": {
+              "className": "NeuralNlu",
+              "settings": {}
+            }
+          },
+          "useStemDict": true
+        },
+        "stemDict": {
+          "hello": {
+            "intent": "greetings.hello",
+            "domain": "default"
+          },
+          "hi": {
+            "intent": "greetings.hello",
+            "domain": "default"
+          },
+          "hey": {
+            "intent": "greetings.hello",
+            "domain": "default"
+          },
+          "yo": {
+            "intent": "greetings.hello",
+            "domain": "default"
+          },
+          "good,morn": {
+            "intent": "greetings.hello",
+            "domain": "default"
+          },
+          "are,how,you": {
+            "intent": "greetings.howareyou",
+            "domain": "default"
+          },
+          "are,how,thing": {
+            "intent": "greetings.howareyou",
+            "domain": "default"
+          },
+          "how,is,life": {
+            "intent": "greetings.howareyou",
+            "domain": "default"
+          },
+          "am,i,so,stress": {
+            "intent": "emotion.stress",
+            "domain": "default"
+          },
+          "feel,i,overwhelm": {
+            "intent": "emotion.stress",
+            "domain": "default"
+          },
+          "much,pressur,too": {
+            "intent": "emotion.stress",
+            "domain": "default"
+          },
+          "am,anxieti,have,i": {
+            "intent": "emotion.stress",
+            "domain": "default"
+          },
+          "about,am,i,nervous,this": {
+            "intent": "emotion.stress",
+            "domain": "default"
+          },
+          "feel,i,sad": {
+            "intent": "emotion.sad",
+            "domain": "default"
+          },
+          "been,cri,have,i": {
+            "intent": "emotion.sad",
+            "domain": "default"
+          },
+          "am,depress,i": {
+            "intent": "emotion.sad",
+            "domain": "default"
+          },
+          "feel,i,miser": {
+            "intent": "emotion.sad",
+            "domain": "default"
+          },
+          "everyth,suck": {
+            "intent": "emotion.sad",
+            "domain": "default"
+          },
+          "an,come,exam,have,i,up": {
+            "intent": "school.exams",
+            "domain": "default"
+          },
+          "am,class,fail,i,my": {
+            "intent": "school.exams",
+            "domain": "default"
+          },
+          "homework,much,too": {
+            "intent": "school.exams",
+            "domain": "default"
+          },
+          "can,i,not,studi": {
+            "intent": "school.exams",
+            "domain": "default"
+          },
+          "am,i,mentor,my,stress,tell": {
+            "intent": "action.message_mentor",
+            "domain": "default"
+          },
+          "a,hi,mentor,messag,my,say,send,to": {
+            "intent": "action.message_mentor",
+            "domain": "default"
+          },
+          "help,i,mentor,messag,need,that": {
+            "intent": "action.message_mentor",
+            "domain": "default"
+          },
+          "an,appoint,book,mentor,my,today,with": {
+            "intent": "action.book_appointment",
+            "domain": "default"
+          },
+          "4,a,at,for,meet,pm,schedul,tomorrow": {
+            "intent": "action.book_appointment",
+            "domain": "default"
+          },
+          "an,appoint,make": {
+            "intent": "action.book_appointment",
+            "domain": "default"
+          }
+        },
+        "intentDict": {
+          "greetings.hello": "default",
+          "greetings.howareyou": "default",
+          "emotion.stress": "default",
+          "emotion.sad": "default",
+          "school.exams": "default",
+          "action.message_mentor": "default",
+          "action.book_appointment": "default"
+        },
+        "sentences": [
+          {
+            "domain": "default",
+            "utterance": "hello",
+            "intent": "greetings.hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "hi",
+            "intent": "greetings.hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "hey",
+            "intent": "greetings.hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "yo",
+            "intent": "greetings.hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "good morning",
+            "intent": "greetings.hello"
+          },
+          {
+            "domain": "default",
+            "utterance": "how are you",
+            "intent": "greetings.howareyou"
+          },
+          {
+            "domain": "default",
+            "utterance": "how are things",
+            "intent": "greetings.howareyou"
+          },
+          {
+            "domain": "default",
+            "utterance": "how is life",
+            "intent": "greetings.howareyou"
+          },
+          {
+            "domain": "default",
+            "utterance": "I am so stressed",
+            "intent": "emotion.stress"
+          },
+          {
+            "domain": "default",
+            "utterance": "I feel overwhelmed",
+            "intent": "emotion.stress"
+          },
+          {
+            "domain": "default",
+            "utterance": "Too much pressure",
+            "intent": "emotion.stress"
+          },
+          {
+            "domain": "default",
+            "utterance": "I am having anxiety",
+            "intent": "emotion.stress"
+          },
+          {
+            "domain": "default",
+            "utterance": "I am nervous about this",
+            "intent": "emotion.stress"
+          },
+          {
+            "domain": "default",
+            "utterance": "I feel sad",
+            "intent": "emotion.sad"
+          },
+          {
+            "domain": "default",
+            "utterance": "I have been crying",
+            "intent": "emotion.sad"
+          },
+          {
+            "domain": "default",
+            "utterance": "I am depressed",
+            "intent": "emotion.sad"
+          },
+          {
+            "domain": "default",
+            "utterance": "I feel miserable",
+            "intent": "emotion.sad"
+          },
+          {
+            "domain": "default",
+            "utterance": "Everything sucks",
+            "intent": "emotion.sad"
+          },
+          {
+            "domain": "default",
+            "utterance": "I have an exam coming up",
+            "intent": "school.exams"
+          },
+          {
+            "domain": "default",
+            "utterance": "I am failing my classes",
+            "intent": "school.exams"
+          },
+          {
+            "domain": "default",
+            "utterance": "Too much homework",
+            "intent": "school.exams"
+          },
+          {
+            "domain": "default",
+            "utterance": "I cannot study",
+            "intent": "school.exams"
+          },
+          {
+            "domain": "default",
+            "utterance": "tell my mentor I am stressed",
+            "intent": "action.message_mentor"
+          },
+          {
+            "domain": "default",
+            "utterance": "send a message to my mentor saying hi",
+            "intent": "action.message_mentor"
+          },
+          {
+            "domain": "default",
+            "utterance": "message mentor that I need help",
+            "intent": "action.message_mentor"
+          },
+          {
+            "domain": "default",
+            "utterance": "book an appointment with my mentor today",
+            "intent": "action.book_appointment"
+          },
+          {
+            "domain": "default",
+            "utterance": "schedule a meeting for tomorrow at 4 pm",
+            "intent": "action.book_appointment"
+          },
+          {
+            "domain": "default",
+            "utterance": "make an appointment",
+            "intent": "action.book_appointment"
+          }
+        ],
+        "domains": {
+          "master_domain": {
+            "settings": {
+              "locale": "en",
+              "tag": "nlu-en",
+              "keepStopwords": true,
+              "nonefeatureValue": 1,
+              "nonedeltaMultiplier": 1.2,
+              "spellCheck": false,
+              "spellCheckDistance": 1,
+              "filterZeros": true,
+              "log": true
+            },
+            "features": {
+              "4": 1,
+              "hello": 1,
+              "hi": 1,
+              "hey": 1,
+              "yo": 1,
+              "good": 1,
+              "morn": 1,
+              "how": 1,
+              "are": 1,
+              "you": 1,
+              "thing": 1,
+              "is": 1,
+              "life": 1,
+              "i": 1,
+              "am": 1,
+              "so": 1,
+              "stress": 1,
+              "feel": 1,
+              "overwhelm": 1,
+              "too": 1,
+              "much": 1,
+              "pressur": 1,
+              "have": 1,
+              "anxieti": 1,
+              "nervous": 1,
+              "about": 1,
+              "this": 1,
+              "sad": 1,
+              "been": 1,
+              "cri": 1,
+              "depress": 1,
+              "miser": 1,
+              "everyth": 1,
+              "suck": 1,
+              "an": 1,
+              "exam": 1,
+              "come": 1,
+              "up": 1,
+              "fail": 1,
+              "my": 1,
+              "class": 1,
+              "homework": 1,
+              "can": 1,
+              "not": 1,
+              "studi": 1,
+              "tell": 1,
+              "mentor": 1,
+              "send": 1,
+              "a": 1,
+              "messag": 1,
+              "to": 1,
+              "say": 1,
+              "that": 1,
+              "need": 1,
+              "help": 1,
+              "book": 1,
+              "appoint": 1,
+              "with": 1,
+              "today": 1,
+              "schedul": 1,
+              "meet": 1,
+              "for": 1,
+              "tomorrow": 1,
+              "at": 1,
+              "pm": 1,
+              "make": 1
+            },
+            "intents": {
+              "greetings.hello": 1,
+              "greetings.howareyou": 1,
+              "emotion.stress": 1,
+              "emotion.sad": 1,
+              "school.exams": 1,
+              "action.message_mentor": 1,
+              "action.book_appointment": 1
+            },
+            "intentFeatures": {
+              "greetings.hello": {
+                "hello": 1,
+                "hi": 1,
+                "hey": 1,
+                "yo": 1,
+                "good": 1,
+                "morn": 1
+              },
+              "greetings.howareyou": {
+                "how": 1,
+                "are": 1,
+                "you": 1,
+                "thing": 1,
+                "is": 1,
+                "life": 1
+              },
+              "emotion.stress": {
+                "i": 1,
+                "am": 1,
+                "so": 1,
+                "stress": 1,
+                "feel": 1,
+                "overwhelm": 1,
+                "too": 1,
+                "much": 1,
+                "pressur": 1,
+                "have": 1,
+                "anxieti": 1,
+                "nervous": 1,
+                "about": 1,
+                "this": 1
+              },
+              "emotion.sad": {
+                "i": 1,
+                "feel": 1,
+                "sad": 1,
+                "have": 1,
+                "been": 1,
+                "cri": 1,
+                "am": 1,
+                "depress": 1,
+                "miser": 1,
+                "everyth": 1,
+                "suck": 1
+              },
+              "school.exams": {
+                "i": 1,
+                "have": 1,
+                "an": 1,
+                "exam": 1,
+                "come": 1,
+                "up": 1,
+                "am": 1,
+                "fail": 1,
+                "my": 1,
+                "class": 1,
+                "too": 1,
+                "much": 1,
+                "homework": 1,
+                "can": 1,
+                "not": 1,
+                "studi": 1
+              },
+              "action.message_mentor": {
+                "tell": 1,
+                "my": 1,
+                "mentor": 1,
+                "i": 1,
+                "am": 1,
+                "stress": 1,
+                "send": 1,
+                "a": 1,
+                "messag": 1,
+                "to": 1,
+                "say": 1,
+                "hi": 1,
+                "that": 1,
+                "need": 1,
+                "help": 1
+              },
+              "action.book_appointment": {
+                "4": 1,
+                "book": 1,
+                "an": 1,
+                "appoint": 1,
+                "with": 1,
+                "my": 1,
+                "mentor": 1,
+                "today": 1,
+                "schedul": 1,
+                "a": 1,
+                "meet": 1,
+                "for": 1,
+                "tomorrow": 1,
+                "at": 1,
+                "pm": 1,
+                "make": 1
+              }
+            },
+            "featuresToIntent": {
+              "4": [
+                "action.book_appointment"
+              ],
+              "hello": [
+                "greetings.hello"
+              ],
+              "hi": [
+                "greetings.hello",
+                "action.message_mentor"
+              ],
+              "hey": [
+                "greetings.hello"
+              ],
+              "yo": [
+                "greetings.hello"
+              ],
+              "good": [
+                "greetings.hello"
+              ],
+              "morn": [
+                "greetings.hello"
+              ],
+              "how": [
+                "greetings.howareyou"
+              ],
+              "are": [
+                "greetings.howareyou"
+              ],
+              "you": [
+                "greetings.howareyou"
+              ],
+              "thing": [
+                "greetings.howareyou"
+              ],
+              "is": [
+                "greetings.howareyou"
+              ],
+              "life": [
+                "greetings.howareyou"
+              ],
+              "i": [
+                "emotion.stress",
+                "emotion.sad",
+                "school.exams",
+                "action.message_mentor"
+              ],
+              "am": [
+                "emotion.stress",
+                "emotion.sad",
+                "school.exams",
+                "action.message_mentor"
+              ],
+              "so": [
+                "emotion.stress"
+              ],
+              "stress": [
+                "emotion.stress",
+                "action.message_mentor"
+              ],
+              "feel": [
+                "emotion.stress",
+                "emotion.sad"
+              ],
+              "overwhelm": [
+                "emotion.stress"
+              ],
+              "too": [
+                "emotion.stress",
+                "school.exams"
+              ],
+              "much": [
+                "emotion.stress",
+                "school.exams"
+              ],
+              "pressur": [
+                "emotion.stress"
+              ],
+              "have": [
+                "emotion.stress",
+                "emotion.sad",
+                "school.exams"
+              ],
+              "anxieti": [
+                "emotion.stress"
+              ],
+              "nervous": [
+                "emotion.stress"
+              ],
+              "about": [
+                "emotion.stress"
+              ],
+              "this": [
+                "emotion.stress"
+              ],
+              "sad": [
+                "emotion.sad"
+              ],
+              "been": [
+                "emotion.sad"
+              ],
+              "cri": [
+                "emotion.sad"
+              ],
+              "depress": [
+                "emotion.sad"
+              ],
+              "miser": [
+                "emotion.sad"
+              ],
+              "everyth": [
+                "emotion.sad"
+              ],
+              "suck": [
+                "emotion.sad"
+              ],
+              "an": [
+                "school.exams",
+                "action.book_appointment"
+              ],
+              "exam": [
+                "school.exams"
+              ],
+              "come": [
+                "school.exams"
+              ],
+              "up": [
+                "school.exams"
+              ],
+              "fail": [
+                "school.exams"
+              ],
+              "my": [
+                "school.exams",
+                "action.message_mentor",
+                "action.book_appointment"
+              ],
+              "class": [
+                "school.exams"
+              ],
+              "homework": [
+                "school.exams"
+              ],
+              "can": [
+                "school.exams"
+              ],
+              "not": [
+                "school.exams"
+              ],
+              "studi": [
+                "school.exams"
+              ],
+              "tell": [
+                "action.message_mentor"
+              ],
+              "mentor": [
+                "action.message_mentor",
+                "action.book_appointment"
+              ],
+              "send": [
+                "action.message_mentor"
+              ],
+              "a": [
+                "action.message_mentor",
+                "action.book_appointment"
+              ],
+              "messag": [
+                "action.message_mentor"
+              ],
+              "to": [
+                "action.message_mentor"
+              ],
+              "say": [
+                "action.message_mentor"
+              ],
+              "that": [
+                "action.message_mentor"
+              ],
+              "need": [
+                "action.message_mentor"
+              ],
+              "help": [
+                "action.message_mentor"
+              ],
+              "book": [
+                "action.book_appointment"
+              ],
+              "appoint": [
+                "action.book_appointment"
+              ],
+              "with": [
+                "action.book_appointment"
+              ],
+              "today": [
+                "action.book_appointment"
+              ],
+              "schedul": [
+                "action.book_appointment"
+              ],
+              "meet": [
+                "action.book_appointment"
+              ],
+              "for": [
+                "action.book_appointment"
+              ],
+              "tomorrow": [
+                "action.book_appointment"
+              ],
+              "at": [
+                "action.book_appointment"
+              ],
+              "pm": [
+                "action.book_appointment"
+              ],
+              "make": [
+                "action.book_appointment"
+              ]
+            },
+            "neuralNetwork": {
+              "settings": {
+                "locale": "en",
+                "tag": "nlu-en",
+                "keepStopwords": true,
+                "nonefeatureValue": 1,
+                "nonedeltaMultiplier": 1.2,
+                "spellCheck": false,
+                "spellCheckDistance": 1,
+                "filterZeros": true,
+                "log": true
+              },
+              "features": [
+                "hello",
+                "hi",
+                "hey",
+                "yo",
+                "good",
+                "morn",
+                "how",
+                "are",
+                "you",
+                "thing",
+                "is",
+                "life",
+                "i",
+                "am",
+                "so",
+                "stress",
+                "feel",
+                "overwhelm",
+                "too",
+                "much",
+                "pressur",
+                "have",
+                "anxieti",
+                "nervous",
+                "about",
+                "this",
+                "sad",
+                "been",
+                "cri",
+                "depress",
+                "miser",
+                "everyth",
+                "suck",
+                "an",
+                "exam",
+                "come",
+                "up",
+                "fail",
+                "my",
+                "class",
+                "homework",
+                "can",
+                "not",
+                "studi",
+                "tell",
+                "mentor",
+                "send",
+                "a",
+                "messag",
+                "to",
+                "say",
+                "that",
+                "need",
+                "help",
+                "book",
+                "appoint",
+                "with",
+                "today",
+                "4",
+                "schedul",
+                "meet",
+                "for",
+                "tomorrow",
+                "at",
+                "pm",
+                "make"
+              ],
+              "intents": [
+                "greetings.hello",
+                "greetings.howareyou",
+                "emotion.stress",
+                "emotion.sad",
+                "school.exams",
+                "action.message_mentor",
+                "action.book_appointment"
+              ],
+              "perceptrons": [
+                [
+                  7.206705093383789,
+                  6.893216609954834,
+                  7.179693222045898,
+                  7.1392974853515625,
+                  3.6441617012023926,
+                  3.6441617012023926,
+                  -3.79614520072937,
+                  -2.1743264198303223,
+                  -1.1020567417144775,
+                  -1.0718315839767456,
+                  -1.6195474863052368,
+                  -1.6195474863052368,
+                  -4.822000026702881,
+                  -1.6296833753585815,
+                  -0.47123947739601135,
+                  -0.47123947739601135,
+                  -1.7167354822158813,
+                  -0.6562590003013611,
+                  -2.827202320098877,
+                  -2.827202320098877,
+                  -1.4609230756759644,
+                  -0.9755178689956665,
+                  -0.22619934380054474,
+                  -0.2674354910850525,
+                  -0.2674354910850525,
+                  -0.2674354910850525,
+                  -0.5474473834037781,
+                  -0.6278862357139587,
+                  -0.6278862357139587,
+                  -0.5912955403327942,
+                  -0.49997231364250183,
+                  -3.48738694190979,
+                  -3.48738694190979,
+                  -2.48748517036438,
+                  -0.07029866427183151,
+                  -0.07029866427183151,
+                  -0.07029866427183151,
+                  -0.009700464084744453,
+                  -2.0991668701171875,
+                  -0.009700464084744453,
+                  -1.3643704652786255,
+                  -0.7381178736686707,
+                  -0.7381178736686707,
+                  -0.7381178736686707,
+                  0,
+                  -2.0963234901428223,
+                  -1.8078453540802002,
+                  -2.465668201446533,
+                  -1.8244028091430664,
+                  -1.8078453540802002,
+                  -1.8078453540802002,
+                  -0.008278698660433292,
+                  -0.008278698660433292,
+                  -0.008278698660433292,
+                  -0.2276197075843811,
+                  -2.398371696472168,
+                  -0.2276197075843811,
+                  -0.2276197075843811,
+                  -0.6539420485496521,
+                  -0.6539420485496521,
+                  -0.6539420485496521,
+                  -0.6539420485496521,
+                  -0.6539420485496521,
+                  -0.6539420485496521,
+                  -0.6539420485496521,
+                  -2.126450538635254,
+                  7.040401691585074
+                ],
+                [
+                  -0.68333500623703,
+                  -0.7024140357971191,
+                  -0.6766095161437988,
+                  -0.672799825668335,
+                  -0.4007508456707001,
+                  -0.4007508456707001,
+                  7.325798988342285,
+                  4.186281204223633,
+                  2.0752363204956055,
+                  2.110377073287964,
+                  3.1397228240966797,
+                  3.1397228240966797,
+                  -1.1092331409454346,
+                  -0.4477725028991699,
+                  -0.1422656923532486,
+                  -0.1422656923532486,
+                  -0.37115344405174255,
+                  -0.14930643141269684,
+                  -0.5434723496437073,
+                  -0.5434723496437073,
+                  -0.269202321767807,
+                  -0.2496034801006317,
+                  -0.0763213261961937,
+                  -0.06323448568582535,
+                  -0.06323448568582535,
+                  -0.06323448568582535,
+                  -0.09517743438482285,
+                  -0.0872604101896286,
+                  -0.0872604101896286,
+                  -0.04833364859223366,
+                  -0.05736751854419708,
+                  -0.4619172215461731,
+                  -0.4619172215461731,
+                  -0.45277467370033264,
+                  -0.028353512287139893,
+                  -0.028353512287139893,
+                  -0.028353512287139893,
+                  -0.005651138257235289,
+                  -0.28137728571891785,
+                  -0.005651138257235289,
+                  -0.21433211863040924,
+                  -0.07868719100952148,
+                  -0.07868719100952148,
+                  -0.07868719100952148,
+                  0,
+                  -0.29433825612068176,
+                  -0.12346582859754562,
+                  -0.3325357139110565,
+                  -0.15701670944690704,
+                  -0.12346582859754562,
+                  -0.12346582859754562,
+                  -0.013741343282163143,
+                  -0.013741343282163143,
+                  -0.013741343282163143,
+                  -0.10769222676753998,
+                  -0.40932196378707886,
+                  -0.10769222676753998,
+                  -0.10769222676753998,
+                  -0.1696767956018448,
+                  -0.1696767956018448,
+                  -0.1696767956018448,
+                  -0.1696767956018448,
+                  -0.1696767956018448,
+                  -0.1696767956018448,
+                  -0.1696767956018448,
+                  -0.26472949981689453,
+                  0.6793167092251411
+                ],
+                [
+                  -0.504368245601654,
+                  -0.5014896392822266,
+                  -0.49678874015808105,
+                  -0.49278414249420166,
+                  -0.26093098521232605,
+                  -0.26093098521232605,
+                  -0.3016994595527649,
+                  -0.18258357048034668,
+                  -0.09067877382040024,
+                  -0.0820411816239357,
+                  -0.11711588501930237,
+                  -0.11711588501930237,
+                  1.5838937759399414,
+                  3.901642084121704,
+                  5.328535556793213,
+                  2.945587396621704,
+                  1.951537847518921,
+                  9.874434471130371,
+                  2.6369645595550537,
+                  2.6369645595550537,
+                  8.086451530456543,
+                  2.3823764324188232,
+                  5.757989883422852,
+                  2.729707956314087,
+                  2.729707956314087,
+                  2.729707956314087,
+                  -4.039021015167236,
+                  -2.270095109939575,
+                  -2.270095109939575,
+                  -5.935988426208496,
+                  -3.898745059967041,
+                  -0.4405849874019623,
+                  -0.4405849874019623,
+                  -1.162790298461914,
+                  -1.113456130027771,
+                  -1.113456130027771,
+                  -1.113456130027771,
+                  -1.5043989419937134,
+                  -3.9946932792663574,
+                  -1.5043989419937134,
+                  -5.462998867034912,
+                  -0.7015151977539062,
+                  -0.7015151977539062,
+                  -0.7015151977539062,
+                  -2.3839659690856934,
+                  -2.5686473846435547,
+                  -0.006508354097604752,
+                  -0.0915832668542862,
+                  -0.1500599980354309,
+                  -0.006508354097604752,
+                  -0.006508354097604752,
+                  -0.13785682618618011,
+                  -0.13785682618618011,
+                  -0.13785682618618011,
+                  0,
+                  -0.03348039090633392,
+                  0,
+                  0,
+                  -0.079380102455616,
+                  -0.079380102455616,
+                  -0.079380102455616,
+                  -0.079380102455616,
+                  -0.079380102455616,
+                  -0.079380102455616,
+                  -0.079380102455616,
+                  -0.03348039090633392,
+                  0.5173773400336878
+                ],
+                [
+                  -1.2780568599700928,
+                  -1.273477554321289,
+                  -1.2613836526870728,
+                  -1.2523269653320312,
+                  -0.6926487684249878,
+                  -0.6926487684249878,
+                  -0.8389197587966919,
+                  -0.5124192833900452,
+                  -0.26917555928230286,
+                  -0.2260660082101822,
+                  -0.3183765411376953,
+                  -0.3183765411376953,
+                  3.7291574478149414,
+                  -0.2601277232170105,
+                  -1.9979056119918823,
+                  -2.7146167755126953,
+                  3.428323745727539,
+                  -7.951422214508057,
+                  -0.607738733291626,
+                  -0.607738733291626,
+                  -0.05164099484682083,
+                  -0.6238104104995728,
+                  -3.950437545776367,
+                  -1.5498027801513672,
+                  -1.5498027801513672,
+                  -1.5498027801513672,
+                  5.79408073425293,
+                  4.962671279907227,
+                  4.962671279907227,
+                  9.365114212036133,
+                  5.604713439941406,
+                  6.492944240570068,
+                  6.492944240570068,
+                  -1.7339853048324585,
+                  -1.518764615058899,
+                  -1.518764615058899,
+                  -1.518764615058899,
+                  -1.3543345928192139,
+                  -2.1322903633117676,
+                  -1.3543345928192139,
+                  -0.5377299785614014,
+                  -1.7429018020629883,
+                  -1.7429018020629883,
+                  -1.7429018020629883,
+                  -0.5568029880523682,
+                  -1.6908681392669678,
+                  -0.02729116939008236,
+                  -0.27916643023490906,
+                  -0.9721023440361023,
+                  -0.02729116939008236,
+                  -0.02729116939008236,
+                  -0.9179465174674988,
+                  -0.9179465174674988,
+                  -0.9179465174674988,
+                  0,
+                  -0.14688722789287567,
+                  0,
+                  0,
+                  -0.2262897789478302,
+                  -0.2262897789478302,
+                  -0.2262897789478302,
+                  -0.2262897789478302,
+                  -0.2262897789478302,
+                  -0.2262897789478302,
+                  -0.2262897789478302,
+                  -0.14688722789287567,
+                  1.2768894606119257
+                ],
+                [
+                  -0.4629429280757904,
+                  -0.5779505372047424,
+                  -0.4378349483013153,
+                  -0.4240838885307312,
+                  -0.3149210214614868,
+                  -0.3149210214614868,
+                  -0.5239220261573792,
+                  -0.33530667424201965,
+                  -0.1461535394191742,
+                  -0.14225344359874725,
+                  -0.1565549075603485,
+                  -0.1565549075603485,
+                  2.2070212364196777,
+                  -1.026752233505249,
+                  -0.810529887676239,
+                  -1.9152562618255615,
+                  -2.078392267227173,
+                  -0.988093376159668,
+                  2.7770159244537354,
+                  2.7770159244537354,
+                  -5.393046855926514,
+                  0.1066536009311676,
+                  -1.7837580442428589,
+                  -0.7420760989189148,
+                  -0.7420760989189148,
+                  -0.7420760989189148,
+                  -0.6247544884681702,
+                  -1.349385142326355,
+                  -1.349385142326355,
+                  -1.3735069036483765,
+                  -0.37530121207237244,
+                  -0.09971998631954193,
+                  -0.09971998631954193,
+                  1.9016188383102417,
+                  3.2889702320098877,
+                  3.2889702320098877,
+                  3.2889702320098877,
+                  4.905445098876953,
+                  3.088318109512329,
+                  4.905445098876953,
+                  8.182633399963379,
+                  3.9509782791137695,
+                  3.9509782791137695,
+                  3.9509782791137695,
+                  -0.9752455353736877,
+                  -2.3642771244049072,
+                  -0.1695655733346939,
+                  -0.40398427844047546,
+                  -0.7361767888069153,
+                  -0.1695655733346939,
+                  -0.1695655733346939,
+                  -0.4843745231628418,
+                  -0.4843745231628418,
+                  -0.4843745231628418,
+                  -0.49901658296585083,
+                  -1.383088231086731,
+                  -0.49901658296585083,
+                  -0.49901658296585083,
+                  -0.16068559885025024,
+                  -0.16068559885025024,
+                  -0.16068559885025024,
+                  -0.16068559885025024,
+                  -0.16068559885025024,
+                  -0.16068559885025024,
+                  -0.16068559885025024,
+                  -0.8691307306289673,
+                  0.22095109481491249
+                ],
+                [
+                  -0.12079465389251709,
+                  0.38888484239578247,
+                  -0.10423111170530319,
+                  -0.10009131580591202,
+                  -0.07172049582004547,
+                  -0.07172049582004547,
+                  -0.22105182707309723,
+                  -0.14121606945991516,
+                  -0.06217067688703537,
+                  -0.05268916115164757,
+                  -0.05199936404824257,
+                  -0.05199936404824257,
+                  0.7756282091140747,
+                  -0.13036692142486572,
+                  -2.001498222351074,
+                  2.136256694793701,
+                  -0.6312189102172852,
+                  -0.2614758312702179,
+                  -0.06007322296500206,
+                  -0.06007322296500206,
+                  -0.04625023528933525,
+                  -0.5264622569084167,
+                  -0.29552388191223145,
+                  -0.27783116698265076,
+                  -0.27783116698265076,
+                  -0.27783116698265076,
+                  -0.1904735416173935,
+                  -0.14331412315368652,
+                  -0.14331412315368652,
+                  -0.38404178619384766,
+                  -0.10781066119670868,
+                  -0.01872028410434723,
+                  -0.01872028410434723,
+                  -1.5251809358596802,
+                  -0.014038396999239922,
+                  -0.014038396999239922,
+                  -0.014038396999239922,
+                  -1.191351056098938,
+                  2.4943439960479736,
+                  -1.191351056098938,
+                  -0.005533027928322554,
+                  -0.1506335437297821,
+                  -0.1506335437297821,
+                  -0.1506335437297821,
+                  4.138968467712402,
+                  5.604172229766846,
+                  0.9857624769210815,
+                  0.6916223168373108,
+                  2.903566360473633,
+                  0.9857624769210815,
+                  0.9857624769210815,
+                  1.918108344078064,
+                  1.918108344078064,
+                  1.918108344078064,
+                  -1.4406920671463013,
+                  -1.497104525566101,
+                  -1.4406920671463013,
+                  -1.4406920671463013,
+                  -0.23038515448570251,
+                  -0.23038515448570251,
+                  -0.23038515448570251,
+                  -0.23038515448570251,
+                  -0.23038515448570251,
+                  -0.23038515448570251,
+                  -0.23038515448570251,
+                  -0.028206340968608856,
+                  -0.7519780547562749
+                ],
+                [
+                  -0.5430647134780884,
+                  -1.0212124586105347,
+                  -0.539242684841156,
+                  -0.5363566875457764,
+                  -0.3006482720375061,
+                  -0.3006482720375061,
+                  -0.5538811683654785,
+                  -0.34487324953079224,
+                  -0.15960314869880676,
+                  -0.13356779515743256,
+                  -0.16488860547542572,
+                  -0.16488860547542572,
+                  -1.6985710859298706,
+                  -0.5140846371650696,
+                  -0.07824642956256866,
+                  -0.2549801766872406,
+                  -0.21481898427009583,
+                  -0.07768744230270386,
+                  -0.33714818954467773,
+                  -0.33714818954467773,
+                  -0.18580135703086853,
+                  -0.9358001947402954,
+                  -0.053921326994895935,
+                  -0.04594502970576286,
+                  -0.04594502970576286,
+                  -0.04594502970576286,
+                  -0.04889620840549469,
+                  -0.042156729847192764,
+                  -0.042156729847192764,
+                  -0.026138929650187492,
+                  -0.02925748936831951,
+                  -0.28610560297966003,
+                  -0.28610560297966003,
+                  4.45532751083374,
+                  -0.7886180281639099,
+                  -0.7886180281639099,
+                  -0.7886180281639099,
+                  -0.04225250706076622,
+                  0.19350861012935638,
+                  -0.04225250706076622,
+                  -0.11363585293292999,
+                  -0.011263348162174225,
+                  -0.011263348162174225,
+                  -0.011263348162174225,
+                  -0.13885129988193512,
+                  0.23390093445777893,
+                  -0.6730340123176575,
+                  1.048108458518982,
+                  -0.7056058645248413,
+                  -0.6730340123176575,
+                  -0.6730340123176575,
+                  -0.012079657055437565,
+                  -0.012079657055437565,
+                  -0.012079657055437565,
+                  1.2055189609527588,
+                  5.244810104370117,
+                  1.2055189609527588,
+                  1.2055189609527588,
+                  1.8135185241699219,
+                  1.8135185241699219,
+                  1.8135185241699219,
+                  1.8135185241699219,
+                  1.8135185241699219,
+                  1.8135185241699219,
+                  1.8135185241699219,
+                  4.039154529571533,
+                  0.5430029258083162
+                ]
+              ]
+            }
+          }
+        }
+      }
+    },
+    "intentDomains": {},
+    "extraSentences": [
+      [
+        "en",
+        "hello"
+      ],
+      [
+        "en",
+        "hi"
+      ],
+      [
+        "en",
+        "hey"
+      ],
+      [
+        "en",
+        "yo"
+      ],
+      [
+        "en",
+        "good morning"
+      ],
+      [
+        "en",
+        "how are you"
+      ],
+      [
+        "en",
+        "how are things"
+      ],
+      [
+        "en",
+        "how is life"
+      ],
+      [
+        "en",
+        "I am so stressed"
+      ],
+      [
+        "en",
+        "I feel overwhelmed"
+      ],
+      [
+        "en",
+        "Too much pressure"
+      ],
+      [
+        "en",
+        "I am having anxiety"
+      ],
+      [
+        "en",
+        "I am nervous about this"
+      ],
+      [
+        "en",
+        "I feel sad"
+      ],
+      [
+        "en",
+        "I have been crying"
+      ],
+      [
+        "en",
+        "I am depressed"
+      ],
+      [
+        "en",
+        "I feel miserable"
+      ],
+      [
+        "en",
+        "Everything sucks"
+      ],
+      [
+        "en",
+        "I have an exam coming up"
+      ],
+      [
+        "en",
+        "I am failing my classes"
+      ],
+      [
+        "en",
+        "Too much homework"
+      ],
+      [
+        "en",
+        "I cannot study"
+      ],
+      [
+        "en",
+        "tell my mentor I am stressed"
+      ],
+      [
+        "en",
+        "send a message to my mentor saying hi"
+      ],
+      [
+        "en",
+        "message mentor that I need help"
+      ],
+      [
+        "en",
+        "book an appointment with my mentor today"
+      ],
+      [
+        "en",
+        "schedule a meeting for tomorrow at 4 pm"
+      ],
+      [
+        "en",
+        "make an appointment"
+      ]
+    ]
+  },
+  "ner": {
+    "settings": {
+      "tag": "ner",
+      "entityPreffix": "%",
+      "entitySuffix": "%"
+    },
+    "rules": {}
+  },
+  "nlgManager": {
+    "settings": {
+      "tag": "nlg-manager"
+    },
+    "responses": {
+      "en": {
+        "greetings.hello": [
+          {
+            "answer": "Hey {{name}}! 😊 Really glad you're here. What's on your mind today?"
+          },
+          {
+            "answer": "Hi {{name}}! 💙 I was literally just thinking — how's your day treating you?"
+          }
+        ],
+        "greetings.howareyou": [
+          {
+            "answer": "I'm doing great, thanks for checking on me 🥺💙 But really, how are *you* doing?"
+          },
+          {
+            "answer": "Honestly? Living my best life listening to you 😄 More importantly — how are *you*, {{name}}?"
+          }
+        ],
+        "emotion.stress": [
+          {
+            "answer": "Ugh, stress is THE worst and I hate that for you 😔 What's been piling up lately? Maybe we can break it down together."
+          },
+          {
+            "answer": "Hey {{name}}, breathe. Seriously — in... and out. 🌬️ You've handled hard things before. What's the biggest thing stressing you right now?"
+          }
+        ],
+        "emotion.sad": [
+          {
+            "answer": "I'm sorry you're going through this 💙 Sadness can feel incredibly heavy. You're not alone — I'm right here. What happened?"
+          },
+          {
+            "answer": "{{name}}, I hear you. It's okay to not be okay 🤍 Can you tell me what's been bringing you down?"
+          }
+        ],
+        "school.exams": [
+          {
+            "answer": "Okay 📚 academic pressure is relentless. Let's not look at the whole pile — what's the single most urgent thing right now?"
+          },
+          {
+            "answer": "You are MORE than your grades, {{name}}. I need you to really hear that 💙 But let's tackle this. What's stressing you most — content, time, or motivation?"
+          }
+        ],
+        "None": [
+          {
+            "answer": "Tell me more about that 👂 I want to fully understand what's going on for you, {{name}}."
+          },
+          {
+            "answer": "That's really interesting — how does that make you feel overall? 🌟"
+          },
+          {
+            "answer": "Hmm, that sounds like there might be more to unpack 🤔 What else is on your mind?"
+          }
+        ]
+      }
+    }
+  },
+  "actionManager": {
+    "settings": {
+      "tag": "action-manager"
+    },
+    "actions": {}
+  },
+  "slotManager": {}
+}

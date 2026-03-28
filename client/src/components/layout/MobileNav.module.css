@@ -1,0 +1,38 @@
+.nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(11, 19, 38, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0.75rem 1rem;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 50;
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--on-surface-variant);
+  text-decoration: none;
+  min-width: 48px;
+}
+
+.label {
+  font-size: 0.625rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.active { color: var(--primary); }
+
+@media (max-width: 1024px) {
+  .nav { display: flex; }
+}

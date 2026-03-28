@@ -1,0 +1,99 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 256px;
+  background: var(--surface);
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 0;
+  z-index: 40;
+  overflow-y: auto;
+}
+
+.brand {
+  padding: 0 1.5rem 2rem;
+}
+
+.brandName {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--primary);
+}
+
+.brandSub {
+  font-size: 0.7rem;
+  color: var(--outline);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-top: 0.25rem;
+}
+
+.nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  color: var(--on-surface-variant);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-right: 4px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.navLink:hover {
+  color: var(--primary);
+  background: var(--surface-container-low);
+}
+
+.navLink.active {
+  color: var(--primary);
+  background: var(--surface-container-high);
+  border-right-color: var(--primary);
+  border-radius: 0 9999px 9999px 0;
+  font-weight: 700;
+}
+
+.footer {
+  padding: 1rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.footerLink, .logoutBtn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.625rem 1.5rem;
+  color: var(--on-surface-variant);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+.footerLink:hover, .logoutBtn:hover {
+  color: var(--primary);
+  background: var(--surface-container-low);
+}
+
+@media (max-width: 1024px) {
+  .sidebar { display: none; }
+}

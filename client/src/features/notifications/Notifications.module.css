@@ -1,0 +1,21 @@
+.page { padding: 2rem; max-width: 800px; margin: 0 auto; }
+.header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; }
+.overline { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2em; color: var(--outline); }
+.title { font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 800; display: flex; align-items: center; gap: 0.75rem; }
+.badge { background: rgba(192,193,255,0.2); color: var(--primary); font-size: 0.875rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 9999px; }
+.markAllBtn { background: transparent; border: 1px solid rgba(70,69,84,0.5); color: var(--on-surface-variant); border-radius: 0.75rem; padding: 0.5rem 1rem; font-family: 'Inter',sans-serif; font-weight: 600; font-size: 0.8125rem; cursor: pointer; transition: all 0.2s; }
+.markAllBtn:hover { background: var(--surface-container-high); color: var(--on-surface); }
+.loading { display: flex; justify-content: center; padding: 4rem; }
+.spinner { width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--surface-container-highest); border-top-color: var(--primary); animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.list { display: flex; flex-direction: column; gap: 0.5rem; }
+.item { display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem; border-radius: 1rem; background: var(--surface-container); border: 1px solid rgba(255,255,255,0.04); cursor: pointer; transition: all 0.2s; position: relative; }
+.item:hover { background: var(--surface-container-high); }
+.unread { background: var(--surface-container-high); border-color: rgba(192,193,255,0.15); }
+.iconWrap { width: 44px; height: 44px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.content { flex: 1; }
+.notifTitle { font-weight: 700; font-size: 0.9375rem; margin-bottom: 0.25rem; }
+.notifBody { color: var(--on-surface-variant); font-size: 0.875rem; line-height: 1.5; }
+.notifTime { font-size: 0.75rem; color: var(--outline); margin-top: 0.5rem; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); flex-shrink: 0; margin-top: 0.5rem; }
+.empty { text-align: center; padding: 4rem; color: var(--outline); display: flex; flex-direction: column; align-items: center; }
