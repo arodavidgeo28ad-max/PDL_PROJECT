@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: '/api',
 });
 
 // Attach JWT token to every request
@@ -11,11 +11,14 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle 401 globally
+// Handle 401 globally — but NOT for auth endpoints (login/register),
+// so error messages can be displayed by the form itself.
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response?.status === 401) {
+    const url = err.config?.url || '';
+    const isAuthEndpoint = url.includes('/auth/login') || url.includes('/auth/register');
+    if (err.response?.status === 401 && !isAuthEndpoint) {
       localStorage.removeItem('stresssync_token');
       localStorage.removeItem('stresssync_user');
       window.location.href = '/login';
@@ -91,6 +94,9 @@ export const directoryAPI = {
   mentors: () => api.get('/directory/mentors'),
   mentor: (id) => api.get(`/directory/mentors/${id}`),
   myMentor: () => api.get('/directory/my-mentor'),
+  students: () => api.get('/directory/students'),
+  kickout: (id) => api.post(`/directory/kickout/${id}`),
+  join: (referralCode) => api.post('/directory/join', { referralCode }),
 };
 
 // Chat

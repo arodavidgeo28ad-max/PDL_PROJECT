@@ -11,6 +11,37 @@
   padding: 2rem 0;
   z-index: 40;
   overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+.mentorSidebar {
+  background: #0d1b2a; /* Deeper navy for professional mentor feel */
+  border-right-color: rgba(79, 219, 200, 0.1);
+}
+
+.studentSidebar {
+  background: var(--surface);
+}
+
+.roleBadge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  letter-spacing: 0.05em;
+}
+
+.mentorSidebar .roleBadge {
+  background: rgba(79, 219, 200, 0.15);
+  color: var(--secondary);
+  border: 1px solid rgba(79, 219, 200, 0.2);
+}
+
+.studentSidebar .roleBadge {
+  background: rgba(192, 193, 255, 0.15);
+  color: var(--primary);
+  border: 1px solid rgba(192, 193, 255, 0.2);
 }
 
 .brand {

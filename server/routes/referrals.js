@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { protect, mentorOnly } = require('../middleware/auth');
-const Referral = require('../models/Referral');
+const supabase = require('../config/supabase');
 
 const generateCode = () => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -17,10 +17,25 @@ router.post('/generate', protect, mentorOnly, async (req, res) => {
     let exists = true;
     while (exists) {
       code = generateCode();
-      exists = await Referral.findOne({ code });
+      const { data } = await supabase.from('referrals').select('id').eq('code', code).single();
+      if (!data) exists = false;
     }
-    const referral = await Referral.create({ mentorId: req.user._id, code });
-    res.status(201).json({ referral });
+    
+    const { data: referral, error } = await supabase.from('referrals').insert([{
+      mentor_id: req.user.id,
+      code: code
+    }]).select().single();
+
+    if (error) throw error;
+
+    res.status(201).json({ referral: {
+      _id: referral.id,
+      id: referral.id,
+      mentorId: referral.mentor_id,
+      code: referral.code,
+      isActive: referral.is_active,
+      createdAt: referral.created_at
+    }});
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -29,9 +44,29 @@ router.post('/generate', protect, mentorOnly, async (req, res) => {
 // GET /api/referrals/my (mentor gets their codes)
 router.get('/my', protect, mentorOnly, async (req, res) => {
   try {
-    const referrals = await Referral.find({ mentorId: req.user._id })
-      .sort({ createdAt: -1 })
-      .populate('studentId', 'firstName lastName email');
+    const { data, error } = await supabase
+      .from('referrals')
+      .select('*, student_profiles:profiles!student_id(id, first_name, last_name, email)')
+      .eq('mentor_id', req.user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    const referrals = data.map(ref => ({
+      _id: ref.id,
+      id: ref.id,
+      mentorId: ref.mentor_id,
+      code: ref.code,
+      isActive: ref.is_active,
+      createdAt: ref.created_at,
+      studentId: ref.student_profiles ? {
+        _id: ref.student_profiles.id,
+        firstName: ref.student_profiles.first_name,
+        lastName: ref.student_profiles.last_name,
+        email: ref.student_profiles.email
+      } : ref.student_id
+    }));
+
     res.json({ referrals });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -42,8 +77,19 @@ router.get('/my', protect, mentorOnly, async (req, res) => {
 router.post('/validate', async (req, res) => {
   try {
     const { code } = req.body;
-    const referral = await Referral.findOne({ code: code?.toUpperCase(), isActive: true });
-    if (!referral) return res.status(400).json({ valid: false, message: 'Invalid or expired code' });
+    if (!code) return res.status(400).json({ valid: false, message: 'Code is required' });
+    
+    const { data: referral, error } = await supabase
+      .from('referrals')
+      .select('id')
+      .eq('code', code.toUpperCase())
+      .eq('is_active', true)
+      .single();
+
+    if (error || !referral) {
+      return res.status(400).json({ valid: false, message: 'Invalid or expired code' });
+    }
+    
     res.json({ valid: true, message: 'Valid referral code' });
   } catch (err) {
     res.status(500).json({ message: err.message });

@@ -42,3 +42,22 @@
   .grid { grid-template-columns: 1fr; }
   .section { grid-column: span 1 !important; }
 }
+
+.kickoutBtn {
+  background: rgba(255,107,129,0.1);
+  color: #ff6b81 !important;
+  border: none;
+  border-radius: 0.5rem;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.kickoutBtn:hover {
+  background: rgba(255,107,129,0.2);
+  transform: scale(1.05);
+}

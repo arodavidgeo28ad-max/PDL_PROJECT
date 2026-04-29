@@ -15,6 +15,7 @@ const mentorLinks = [
   { icon: 'calendar_today', label: 'Schedule', to: '/appointments' },
   { icon: 'forum', label: 'Chat', to: '/messages' },
   { icon: 'notifications', label: 'Alerts', to: '/notifications' },
+  { icon: 'description', label: 'Referrals', to: '/referral' },
   { icon: 'person', label: 'Profile', to: '/profile' },
 ];
 

@@ -26,15 +26,19 @@ const mentorLinks = [
 export default function Sidebar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const links = user?.role === 'mentor' ? mentorLinks : studentLinks;
+  const isMentor = user?.role === 'mentor';
+  const links = isMentor ? mentorLinks : studentLinks;
 
   const handleLogout = () => { logout(); navigate('/login'); };
 
   return (
-    <aside className={styles.sidebar}>
+    <aside className={`${styles.sidebar} ${isMentor ? styles.mentorSidebar : styles.studentSidebar}`}>
       <div className={styles.brand}>
-        <h1 className={`${styles.brandName} font-headline`}>StressSync</h1>
-        <p className={styles.brandSub}>Luminescent Sanctuary</p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <h1 className={`${styles.brandName} font-headline`}>StressSync</h1>
+          <span className={styles.roleBadge}>{isMentor ? 'Mentor' : 'Student'}</span>
+        </div>
+        <p className={styles.brandSub}>{isMentor ? 'Guiding Sanctuary' : 'Luminescent Sanctuary'}</p>
       </div>
 
       <nav className={styles.nav}>

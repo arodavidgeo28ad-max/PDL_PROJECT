@@ -1,11 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { protect } = require('../middleware/auth');
-const Notification = require('../models/Notification');
-const Message = require('../models/Message');
-const Appointment = require('../models/Appointment');
-const User = require('../models/User');
 const nlpManager = require('../services/nlpEngine');
+const supabase = require('../config/supabase');
 
 // ─── Distress Keywords (Fallback safety net) ──────────────────────────────────
 const DISTRESS_KEYWORDS = [
@@ -90,13 +87,15 @@ router.post('/', protect, async (req, res) => {
         return res.json({ reply: `I'd love to help you reach out, ${name} 💙 But it looks like you don't have a mentor assigned yet. You can find one in the **Directory** tab!` });
       }
       const msgContent = extractMentorMessage(lowerMsg) || message;
-      await Message.create({ senderId: user._id, receiverId: user.mentorId, content: msgContent });
-      await Notification.create({
-        userId: user.mentorId, type: 'message',
+      
+      await supabase.from('messages').insert([{ sender_id: user.id, receiver_id: user.mentorId, content: msgContent }]);
+      await supabase.from('notifications').insert([{
+        user_id: user.mentorId, type: 'message',
         title: `New message from ${name}`,
         body: `${name} says: "${msgContent}"`,
-        icon: 'chat', actionUrl: '/messages'
-      });
+        icon: 'chat', action_url: '/messages'
+      }]);
+      
       return res.json({ reply: `Done! ✅ I've sent your message to your mentor: *"${msgContent}"* 💙 They'll get a notification right away!` });
     }
 
@@ -110,18 +109,21 @@ router.post('/', protect, async (req, res) => {
         return res.json({ reply: `I want to book that appointment for you, ${name}! 📅 Just let me know what time works — for example: *"book appointment today at 4 pm"* or *"tomorrow at 10 am"*` });
       }
       const formattedTime = appointmentTime.toLocaleString('en-US', { weekday: 'long', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true });
-      await Appointment.create({
-        studentId: user._id, mentorId: user.mentorId,
-        dateTime: appointmentTime,
+      
+      await supabase.from('appointments').insert([{
+        student_id: user.id, mentor_id: user.mentorId,
+        date_time: appointmentTime.toISOString(),
         reason: `Requested via AI Chat by ${name}`,
         status: 'requested'
-      });
-      await Notification.create({
-        userId: user.mentorId, type: 'appointment',
+      }]);
+      
+      await supabase.from('notifications').insert([{
+        user_id: user.mentorId, type: 'appointment',
         title: `New appointment request from ${name}`,
         body: `${name} has requested a session on ${formattedTime}. Please accept or decline.`,
-        icon: 'event', actionUrl: '/appointments'
-      });
+        icon: 'event', action_url: '/appointments'
+      }]);
+
       return res.json({ reply: `All done! 🎉 I've booked an appointment request with your mentor for **${formattedTime}**. They'll get a notification to confirm it. You can also track it in the **Appointments** tab! 📅` });
     }
 
@@ -134,18 +136,22 @@ router.post('/', protect, async (req, res) => {
       const distressCount = allTexts.filter(t => DISTRESS_KEYWORDS.some(k => t.includes(k))).length;
 
       if (distressCount >= 2 && user.mentorId) {
-        const recentAlert = await Notification.findOne({
-          userId: user.mentorId, type: 'system',
-          createdAt: { $gt: new Date(Date.now() - 24 * 60 * 60 * 1000) },
-          title: new RegExp(name, 'i')
-        });
+        const { data: recentAlert } = await supabase
+          .from('notifications')
+          .select('id')
+          .eq('user_id', user.mentorId)
+          .eq('type', 'system')
+          .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+          .ilike('title', `%${name}%`)
+          .single();
+          
         if (!recentAlert) {
-          await Notification.create({
-            userId: user.mentorId, type: 'system',
+          await supabase.from('notifications').insert([{
+            user_id: user.mentorId, type: 'system',
             title: `Check-in suggestion for ${name}`,
             body: `${name} has expressed repeated signs of stress or sadness in recent chats. A gentle check-in could be very helpful.`,
-            icon: 'volunteer_activism', actionUrl: '/messages'
-          });
+            icon: 'volunteer_activism', action_url: '/messages'
+          }]);
         }
       }
     } catch (e) {

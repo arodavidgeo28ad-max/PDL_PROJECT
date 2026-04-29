@@ -12,8 +12,15 @@ export default function Dashboard() {
   const [analyzeMsg, setAnalyzeMsg] = useState('');
 
   useEffect(() => {
+    if (user?.role === 'mentor') {
+      import('react-router-dom').then(({ Navigate }) => {
+        // Since we are in a functional component, we should handle this via Navigate or window.location
+        window.location.href = '/';
+      });
+      return;
+    }
     dashboardAPI.get().then(r => setData(r.data)).catch(console.error).finally(() => setLoading(false));
-  }, []);
+  }, [user]);
 
   const runAnalysis = async () => {
     setAnalyzing(true);

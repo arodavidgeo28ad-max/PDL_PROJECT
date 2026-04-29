@@ -4,7 +4,7 @@
  */
 
 const analyzeWellness = (data) => {
-  const { sleepHours, screenTime, exerciseHours, studyHours, socialScore, mood } = data;
+  const { sleepHours, screenTime, exerciseHours, studyHours, socialScore, mood, pssScore } = data;
   let stressScore = 0;
   const factors = [];
 
@@ -75,6 +75,25 @@ const analyzeWellness = (data) => {
   // --- Mood Adjustment ---
   const moodMap = { great: -10, good: -5, okay: 0, stressed: 10, overwhelmed: 20 };
   stressScore += (moodMap[mood] || 0);
+
+  // --- PSS-10 Perceived Stress Scale (0-40) ---
+  if (pssScore !== undefined && pssScore !== null) {
+    // PSS contributes up to 25 points to stress score
+    // Low stress (0-13): minimal/negative impact, Moderate (14-26): adds stress, High (27-40): significant stress
+    const pssImpact = Math.round(((pssScore - 13) / 27) * 25);
+    const clampedPssImpact = Math.max(-5, Math.min(25, pssImpact));
+    if (clampedPssImpact > 0) {
+      stressScore += clampedPssImpact;
+      factors.push({
+        factor: 'High Perceived Stress',
+        impact: clampedPssImpact,
+        icon: 'psychology',
+        description: `PSS-10 score: ${pssScore}/40. ${pssScore > 26 ? 'Perceived stress is critically elevated — consider professional support.' : 'Moderate perceived stress detected from self-assessment.'}`
+      });
+    } else {
+      stressScore += clampedPssImpact; // slight reduction for low PSS
+    }
+  }
 
   // Clamp between 0 and 100
   stressScore = Math.min(100, Math.max(0, stressScore));

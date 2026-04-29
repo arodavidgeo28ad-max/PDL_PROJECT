@@ -44,7 +44,10 @@ export default function Messaging() {
           <h2 className="font-headline" style={{ fontWeight: 700, fontSize: '1.25rem' }}>Messages</h2>
         </div>
         {loading ? <div className={styles.loading}><div className={styles.spinner} /></div> : contacts.length === 0 ? (
-          <div className={styles.emptyContacts}>No conversations yet</div>
+          <div className={styles.emptyContacts}>
+            <span className="material-symbols-outlined" style={{ fontSize: 48, color: 'var(--outline)', marginBottom: '1rem' }}>person_off</span>
+            <p>{user.role === 'student' ? 'Assign a mentor to start messaging.' : 'No students assigned yet.'}</p>
+          </div>
         ) : contacts.map(c => (
           <div key={c._id} className={`${styles.contact} ${selected?._id === c._id ? styles.contactActive : ''}`} onClick={() => setSelected(c)}>
             <div className={styles.contactAvatar}>{c.firstName[0]}{c.lastName[0]}</div>

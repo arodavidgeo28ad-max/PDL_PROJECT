@@ -15,10 +15,15 @@ export default function TopBar() {
         <Link to="/notifications" className={styles.iconBtn}>
           <span className="material-symbols-outlined">notifications</span>
         </Link>
-        <div className={styles.avatar}>
-          <span style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--primary)' }}>
-            {user?.firstName?.[0]}{user?.lastName?.[0]}
-          </span>
+        <div className={styles.userProfile}>
+          <div className={styles.roleBadge} style={{ background: user?.role === 'mentor' ? 'rgba(79, 219, 200, 0.15)' : 'rgba(192, 193, 255, 0.15)', color: user?.role === 'mentor' ? 'var(--secondary)' : 'var(--primary)' }}>
+            {user?.role?.toUpperCase()}
+          </div>
+          <div className={styles.avatar}>
+            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--primary)' }}>
+              {user?.firstName?.[0]}{user?.lastName?.[0]}
+            </span>
+          </div>
         </div>
       </div>
     </header>

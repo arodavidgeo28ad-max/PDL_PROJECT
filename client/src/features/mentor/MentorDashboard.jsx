@@ -26,6 +26,17 @@ export default function MentorDashboard() {
     setPendingAppts(prev => prev.filter(a => a._id !== id));
   };
 
+  const kickoutStudent = async (studentId) => {
+    if (!window.confirm('Are you sure you want to end this mentorship?')) return;
+    try {
+      const { directoryAPI: api } = await import('../../api');
+      await api.kickout(studentId);
+      setContacts(prev => prev.filter(c => c._id !== studentId));
+      // Refresh used referrals count
+      referralsAPI.myReferrals().then(r => setReferrals(r.data.referrals));
+    } catch (err) { alert(err.response?.data?.message || 'Kickout failed'); }
+  };
+
   const activeReferrals = referrals.filter(r => r.isActive);
   const usedReferrals = referrals.filter(r => !r.isActive).length;
 
@@ -115,13 +126,18 @@ export default function MentorDashboard() {
           {loading ? <div className={styles.loading}><div className={styles.spinner} /></div> : contacts.length === 0 ? (
             <div className={styles.empty}><span className="material-symbols-outlined" style={{ fontSize: 36 }}>forum</span><p>No conversations yet</p></div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '0.75rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '0.75rem' }}>
               {contacts.map(c => (
                 <div key={c._id} className={styles.contactCard}>
-                  <div className={styles.contactAvatar}>{c.firstName[0]}{c.lastName[0]}</div>
-                  <div>
+                  <div className={styles.contactAvatar}>{c.firstName?.[0] ?? '?'}{c.lastName?.[0] ?? ''}</div>
+                  <div style={{ flex: 1 }}>
                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{c.firstName} {c.lastName}</div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--on-surface-variant)', marginTop: '0.1rem' }}>{c.lastMessage || 'Start conversation'}</div>
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.25rem' }}>
+                    <button className={styles.kickoutBtn} onClick={() => kickoutStudent(c._id)} title="Kickout student">
+                      <span className="material-symbols-outlined" style={{ fontSize: 18 }}>person_remove</span>
+                    </button>
                   </div>
                   {c.unreadCount > 0 && <span className={styles.unreadBadge}>{c.unreadCount}</span>}
                 </div>

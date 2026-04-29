@@ -22,6 +22,7 @@ import Directory from './features/directory/Directory';
 import AIChat from './features/chat/AIChat';
 import MentorDashboard from './features/mentor/MentorDashboard';
 import Profile from './features/profile/Profile';
+import AccessDenied from './features/auth/AccessDenied';
 
 const ProtectedLayout = () => {
   const { isAuthenticated, loading } = useAuth();
@@ -37,7 +38,7 @@ const ProtectedLayout = () => {
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar />
-      <div style={{ flex: 1, marginLeft: '256px', display: 'flex', flexDirection: 'column' }}>
+      <div className="main-content" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <TopBar />
         <main style={{ flex: 1, paddingTop: '72px', paddingBottom: '80px', minHeight: '100vh' }}>
           <Outlet />
@@ -63,16 +64,23 @@ function AppRoutes() {
       <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
       <Route element={<ProtectedLayout />}>
         <Route path="/" element={user?.role === 'mentor' ? <MentorDashboard /> : <Dashboard />} />
-        <Route path="/wellness" element={<WellnessHub />} />
-        <Route path="/analysis" element={<AIAnalysis />} />
+        
+        {/* Student-only routes */}
+        <Route path="/wellness" element={user?.role === 'student' ? <WellnessHub /> : <AccessDenied />} />
+        <Route path="/analysis" element={user?.role === 'student' ? <AIAnalysis /> : <AccessDenied />} />
+        <Route path="/tracker" element={user?.role === 'student' ? <TaskTracker /> : <AccessDenied />} />
+        <Route path="/ai-chat" element={user?.role === 'student' ? <AIChat /> : <AccessDenied />} />
+        
+        {/* Shared or Role-Aware routes */}
         <Route path="/appointments" element={<Appointments />} />
         <Route path="/messages" element={<Messaging />} />
         <Route path="/notifications" element={<Notifications />} />
-        <Route path="/tracker" element={<TaskTracker />} />
-        <Route path="/referral" element={user?.role === 'mentor' ? <ReferralCenter /> : <Navigate to="/" />} />
         <Route path="/directory" element={<Directory />} />
-        <Route path="/ai-chat" element={<AIChat />} />
         <Route path="/profile" element={<Profile />} />
+        
+        {/* Mentor-only routes */}
+        <Route path="/referral" element={user?.role === 'mentor' ? <ReferralCenter /> : <AccessDenied />} />
+        
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
     </Routes>

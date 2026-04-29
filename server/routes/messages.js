@@ -1,26 +1,57 @@
 const express = require('express');
 const router = express.Router();
 const { protect } = require('../middleware/auth');
-const Message = require('../models/Message');
+const supabase = require('../config/supabase');
+
+const mapMessage = (msg) => {
+  if (!msg) return null;
+  return {
+    _id: msg.id,
+    id: msg.id,
+    senderId: msg.sender_profiles ? {
+      _id: msg.sender_profiles.id,
+      firstName: msg.sender_profiles.first_name,
+      lastName: msg.sender_profiles.last_name,
+      avatar: msg.sender_profiles.avatar
+    } : msg.sender_id,
+    receiverId: msg.receiver_id,
+    content: msg.content,
+    read: msg.read,
+    readAt: msg.read_at,
+    createdAt: msg.created_at
+  };
+};
 
 // GET /api/messages/conversation/:userId
 router.get('/conversation/:userId', protect, async (req, res) => {
   try {
     const otherId = req.params.userId;
-    const messages = await Message.find({
-      $or: [
-        { senderId: req.user._id, receiverId: otherId },
-        { senderId: otherId, receiverId: req.user._id }
-      ]
-    }).sort({ createdAt: 1 }).populate('senderId', 'firstName lastName avatar');
+    
+    // Authorization check
+    if (req.user.role === 'student') {
+      if (otherId !== req.user.mentorId) return res.status(403).json({ message: 'Access denied: You can only message your assigned mentor.' });
+    } else if (req.user.role === 'mentor') {
+      const { data: isStudent } = await supabase.from('profiles').select('id').eq('id', otherId).eq('mentor_id', req.user.id).single();
+      if (!isStudent) return res.status(403).json({ message: 'Access denied: You can only message your assigned students.' });
+    }
+
+    const { data: messages, error } = await supabase
+      .from('messages')
+      .select('*, sender_profiles:profiles!sender_id(id, first_name, last_name, avatar)')
+      .or(`and(sender_id.eq.${req.user.id},receiver_id.eq.${otherId}),and(sender_id.eq.${otherId},receiver_id.eq.${req.user.id})`)
+      .order('created_at', { ascending: true });
+
+    if (error) throw error;
 
     // Mark as read
-    await Message.updateMany(
-      { senderId: otherId, receiverId: req.user._id, read: false },
-      { read: true, readAt: new Date() }
-    );
+    await supabase
+      .from('messages')
+      .update({ read: true, read_at: new Date().toISOString() })
+      .eq('sender_id', otherId)
+      .eq('receiver_id', req.user.id)
+      .eq('read', false);
 
-    res.json({ messages });
+    res.json({ messages: (messages || []).map(mapMessage) });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -29,28 +60,59 @@ router.get('/conversation/:userId', protect, async (req, res) => {
 // GET /api/messages/contacts - list conversation partners
 router.get('/contacts', protect, async (req, res) => {
   try {
-    const userId = req.user._id;
-    // Contacts should include anyone they can talk to, allowing them to START a conversation.
-    // Students can talk to mentors. Mentors can talk to students.
-    const User = require('../models/User');
+    const userId = req.user.id;
     let contacts = [];
+
     if (req.user.role === 'student') {
-      contacts = await User.find({ role: 'mentor' }).select('firstName lastName avatar role');
+      // Students can only message their assigned mentor
+      if (req.user.mentorId) {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('id, first_name, last_name, avatar, role')
+          .eq('id', req.user.mentorId)
+          .single();
+        if (error && error.code !== 'PGRST116') throw error;
+        if (data) contacts = [data];
+      }
     } else {
-      contacts = await User.find({ role: 'student' }).select('firstName lastName avatar role');
+      // Mentors see only their assigned students
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, first_name, last_name, avatar, role')
+        .eq('role', 'student')
+        .eq('mentor_id', userId);
+      if (error) throw error;
+      contacts = data || [];
     }
 
     // Add last message & unread count
     const contactsWithMeta = await Promise.all(contacts.map(async (c) => {
-      const lastMsg = await Message.findOne({
-        $or: [
-          { senderId: userId, receiverId: c._id },
-          { senderId: c._id, receiverId: userId }
-        ]
-      }).sort({ createdAt: -1 });
+      const { data: lastMsgData } = await supabase
+        .from('messages')
+        .select('*')
+        .or(`and(sender_id.eq.${userId},receiver_id.eq.${c.id}),and(sender_id.eq.${c.id},receiver_id.eq.${userId})`)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
 
-      const unread = await Message.countDocuments({ senderId: c._id, receiverId: userId, read: false });
-      return { ...c.toObject(), lastMessage: lastMsg?.content, lastMessageAt: lastMsg?.createdAt, unreadCount: unread };
+      const { count: unreadCount } = await supabase
+        .from('messages')
+        .select('*', { count: 'exact', head: true })
+        .eq('sender_id', c.id)
+        .eq('receiver_id', userId)
+        .eq('read', false);
+
+      return { 
+        _id: c.id,
+        id: c.id,
+        firstName: c.first_name,
+        lastName: c.last_name,
+        avatar: c.avatar,
+        role: c.role,
+        lastMessage: lastMsgData?.content, 
+        lastMessageAt: lastMsgData?.created_at, 
+        unreadCount: unreadCount || 0 
+      };
     }));
 
     // Sort by most recently active conversation
@@ -62,6 +124,7 @@ router.get('/contacts', protect, async (req, res) => {
 
     res.json({ contacts: contactsWithMeta });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: err.message });
   }
 });
@@ -70,20 +133,33 @@ router.get('/contacts', protect, async (req, res) => {
 router.post('/', protect, async (req, res) => {
   try {
     const { receiverId, content } = req.body;
-    const message = await Message.create({ senderId: req.user._id, receiverId, content });
-    const populated = await message.populate('senderId', 'firstName lastName avatar');
 
-    const Notification = require('../models/Notification');
-    await Notification.create({
-      userId: receiverId,
+    // Authorization check
+    if (req.user.role === 'student') {
+      if (receiverId !== req.user.mentorId) return res.status(403).json({ message: 'Access denied: You can only message your assigned mentor.' });
+    } else if (req.user.role === 'mentor') {
+      const { data: isStudent } = await supabase.from('profiles').select('id').eq('id', receiverId).eq('mentor_id', req.user.id).single();
+      if (!isStudent) return res.status(403).json({ message: 'Access denied: You can only message your assigned students.' });
+    }
+    
+    const { data: messageRaw, error } = await supabase.from('messages').insert([{
+      sender_id: req.user.id,
+      receiver_id: receiverId,
+      content: content
+    }]).select('*, sender_profiles:profiles!sender_id(id, first_name, last_name, avatar)').single();
+
+    if (error) throw error;
+
+    await supabase.from('notifications').insert([{
+      user_id: receiverId,
       type: 'message',
       title: `New message from ${req.user.firstName}`,
       body: content.length > 60 ? content.substring(0, 60) + '...' : content,
       icon: 'forum',
-      actionUrl: `/messages`
-    });
+      action_url: `/messages`
+    }]);
 
-    res.status(201).json({ message: populated });
+    res.status(201).json({ message: mapMessage(messageRaw) });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

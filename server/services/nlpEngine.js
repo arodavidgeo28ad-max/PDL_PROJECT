@@ -66,9 +66,13 @@ manager.addAnswer('en', 'None', 'Hmm, that sounds like there might be more to un
 
 
 async function trainModel() {
-  await manager.train();
-  manager.save();
-  console.log("NLP Model Trained");
+  try {
+    await manager.train();
+    // Note: manager.save() is intentionally omitted to avoid disk-write crashes in cloud environments
+    console.log('✅ NLP Model Trained (in-memory)');
+  } catch (err) {
+    console.error('⚠️ NLP training error (non-fatal):', err.message);
+  }
 }
 
 trainModel();

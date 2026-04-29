@@ -1,54 +1,119 @@
 const express = require('express');
 const router = express.Router();
 const { protect } = require('../middleware/auth');
-const WellnessData = require('../models/WellnessData');
-const StressReport = require('../models/StressReport');
-const Task = require('../models/Task');
-const Appointment = require('../models/Appointment');
-const Notification = require('../models/Notification');
+const supabase = require('../config/supabase');
+
+// Map stress report
+const mapStressReport = (sr) => {
+  if (!sr) return null;
+  return {
+    _id: sr.id,
+    id: sr.id,
+    userId: sr.user_id,
+    wellnessDataId: sr.wellness_data_id,
+    stressScore: sr.stress_score,
+    burnoutRisk: sr.burnout_risk,
+    recommendations: sr.recommendations,
+    createdAt: sr.created_at
+  };
+};
+
+const mapWellnessData = (wd) => {
+  if (!wd) return null;
+  return {
+    _id: wd.id,
+    id: wd.id,
+    userId: wd.user_id,
+    sleepHours: wd.sleep_hours,
+    screenTime: wd.screen_time,
+    exerciseHours: wd.exercise_hours,
+    studyHours: wd.study_hours,
+    socialScore: wd.social_score,
+    mood: wd.mood,
+    stressScore: wd.stress_score,
+    createdAt: wd.created_at
+  };
+};
 
 // GET /api/dashboard
 router.get('/', protect, async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user.id;
 
     // Latest stress report
-    const latestReport = await StressReport.findOne({ userId }).sort({ createdAt: -1 });
+    const { data: latestReportRaw } = await supabase
+      .from('stress_reports')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+
+    const latestReport = latestReportRaw ? mapStressReport(latestReportRaw) : null;
 
     // Last 7 wellness entries for trend chart
-    const wellnessHistory = await WellnessData.find({ userId })
-      .sort({ createdAt: -1 })
-      .limit(7)
-      .select('sleepHours screenTime exerciseHours stressScore createdAt');
+    const { data: wellnessHistoryRaw } = await supabase
+      .from('wellness_data')
+      .select('id, sleep_hours, screen_time, exercise_hours, stress_score, created_at')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+      .limit(7);
+
+    let wellnessHistory = [];
+    if (wellnessHistoryRaw) {
+      wellnessHistory = wellnessHistoryRaw.map(mapWellnessData).reverse();
+    }
 
     // Task stats
-    const [totalTasks, completedTasks, inProgressTasks] = await Promise.all([
-      Task.countDocuments({ userId }),
-      Task.countDocuments({ userId, status: 'completed' }),
-      Task.countDocuments({ userId, status: 'in-progress' }),
-    ]);
+    const { count: totalTasks } = await supabase.from('tasks').select('*', { count: 'exact', head: true }).eq('user_id', userId);
+    const { count: completedTasks } = await supabase.from('tasks').select('*', { count: 'exact', head: true }).eq('user_id', userId).eq('status', 'completed');
+    const { count: inProgressTasks } = await supabase.from('tasks').select('*', { count: 'exact', head: true }).eq('user_id', userId).eq('status', 'in-progress');
 
     // Upcoming appointments
-    const upcomingAppts = await Appointment.find({
-      studentId: userId,
-      status: 'accepted',
-      dateTime: { $gte: new Date() }
-    }).sort({ dateTime: 1 }).limit(3).populate('mentorId', 'firstName lastName');
+    const { data: upcomingApptsRaw } = await supabase
+      .from('appointments')
+      .select('id, date_time, status, notes, mentor_id, profiles:mentor_id(first_name, last_name)')
+      .eq('student_id', userId)
+      .eq('status', 'accepted')
+      .gte('date_time', new Date().toISOString())
+      .order('date_time', { ascending: true })
+      .limit(3);
+
+    const upcomingAppointments = (upcomingApptsRaw || []).map(appt => ({
+      _id: appt.id,
+      id: appt.id,
+      dateTime: appt.date_time,
+      status: appt.status,
+      notes: appt.notes,
+      mentorId: appt.profiles ? {
+        _id: appt.mentor_id,
+        firstName: appt.profiles.first_name,
+        lastName: appt.profiles.last_name
+      } : { _id: appt.mentor_id }
+    }));
 
     // Unread notifications count
-    const unreadCount = await Notification.countDocuments({ userId, read: false });
+    const { count: unreadCount } = await supabase.from('notifications').select('*', { count: 'exact', head: true }).eq('user_id', userId).eq('read', false);
 
     // Latest wellness entry
-    const latestWellness = await WellnessData.findOne({ userId }).sort({ createdAt: -1 });
+    const { data: latestWellnessRaw } = await supabase
+      .from('wellness_data')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+
+    const latestWellness = latestWellnessRaw ? mapWellnessData(latestWellnessRaw) : null;
 
     res.json({
       stressScore: latestReport?.stressScore ?? null,
       burnoutRisk: latestReport?.burnoutRisk ?? null,
       latestReport,
-      wellnessHistory: wellnessHistory.reverse(),
-      tasks: { total: totalTasks, completed: completedTasks, inProgress: inProgressTasks },
-      upcomingAppointments: upcomingAppts,
-      unreadNotifications: unreadCount,
+      wellnessHistory,
+      tasks: { total: totalTasks || 0, completed: completedTasks || 0, inProgress: inProgressTasks || 0 },
+      upcomingAppointments,
+      unreadNotifications: unreadCount || 0,
       latestWellness
     });
   } catch (err) {

@@ -13,6 +13,12 @@ export default function AIAnalysis() {
     analysisAPI.latest().then(r => setReport(r.data.report)).catch(console.error).finally(() => setLoading(false));
   }, []);
 
+  if (loading) return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh' }}>
+      <div style={{ width: 40, height: 40, borderRadius: '50%', border: '3px solid var(--primary)', borderTopColor: 'transparent', animation: 'spin 1s linear infinite' }} />
+    </div>
+  );
+
   const runAnalysis = async () => {
     setAnalyzing(true);
     try {
@@ -43,11 +49,11 @@ export default function AIAnalysis() {
                 {report ? `${report.burnoutPercentage}%` : '--'}
               </span>
               <span style={{ fontSize: '1.25rem', fontWeight: 600, color: report ? getRiskColor(report.burnoutRisk) : 'var(--outline)' }}>
-                {report ? (report.burnoutRisk.charAt(0).toUpperCase() + report.burnoutRisk.slice(1)) + ' Risk' : 'No Data'}
+              {report ? (report.burnoutRisk ? (report.burnoutRisk.charAt(0).toUpperCase() + report.burnoutRisk.slice(1)) + ' Risk' : 'Unknown Risk') : 'No Data'}
               </span>
             </div>
             <div style={{ display: 'flex', alignItems: 'flex-end', gap: '0.5rem', height: '5rem', marginTop: '1rem' }}>
-              {report ? [30, 45, 25, report.burnoutPercentage, 35].map((h, i) => (
+              {report ? [30, 45, 25, report.burnoutPercentage ?? 0, 35].map((h, i) => (
                 <div key={i} style={{ flex: 1, background: i === 3 ? getRiskColor(report.burnoutRisk) : 'var(--surface-container-high)', borderRadius: '0.25rem 0.25rem 0 0', height: `${h}%`, transition: 'height 0.8s ease', boxShadow: i === 3 ? `0 0 20px ${getRiskColor(report.burnoutRisk)}40` : 'none' }} />
               )) : [40, 55, 30, 70, 45].map((h, i) => (
                 <div key={i} style={{ flex: 1, background: 'var(--surface-container-high)', borderRadius: '0.25rem 0.25rem 0 0', height: `${h}%` }} />
@@ -93,7 +99,7 @@ export default function AIAnalysis() {
               <h2 className="font-headline" style={{ fontSize: '1.375rem', fontWeight: 700 }}>Top Contributing Factors</h2>
             </div>
             <div className={styles.factorGrid}>
-              {report.contributingFactors.map((f, i) => (
+              {(report.contributingFactors || []).map((f, i) => (
                 <div key={i} className={styles.factorCard}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
                     <span className="material-symbols-outlined" style={{ color: 'var(--tertiary)', fontSize: '2rem' }}>{f.icon}</span>

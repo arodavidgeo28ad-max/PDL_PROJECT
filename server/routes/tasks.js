@@ -1,16 +1,44 @@
 const express = require('express');
 const router = express.Router();
 const { protect } = require('../middleware/auth');
-const Task = require('../models/Task');
+const supabase = require('../config/supabase');
+
+const mapTask = (task) => {
+  if (!task) return null;
+  return {
+    _id: task.id,
+    id: task.id,
+    userId: task.user_id,
+    title: task.title,
+    description: task.description,
+    subject: task.subject,
+    priority: task.priority,
+    status: task.status,
+    dueDate: task.due_date,
+    estimatedHours: task.estimated_hours,
+    completedAt: task.completed_at,
+    createdAt: task.created_at
+  };
+};
 
 // GET /api/tasks
 router.get('/', protect, async (req, res) => {
   try {
     const { status } = req.query;
-    const query = { userId: req.user._id };
-    if (status) query.status = status;
-    const tasks = await Task.find(query).sort({ priority: -1, dueDate: 1, createdAt: -1 });
-    res.json({ tasks });
+    let query = supabase.from('tasks').select('*').eq('user_id', req.user.id);
+    
+    if (status) {
+      query = query.eq('status', status);
+    }
+    
+    const { data: tasks, error } = await query
+      .order('priority', { ascending: false })
+      .order('due_date', { ascending: true })
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+
+    res.json({ tasks: tasks.map(mapTask) });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -20,10 +48,20 @@ router.get('/', protect, async (req, res) => {
 router.post('/', protect, async (req, res) => {
   try {
     const { title, description, subject, priority, dueDate, estimatedHours } = req.body;
-    const task = await Task.create({
-      userId: req.user._id, title, description, subject, priority, dueDate, estimatedHours
-    });
-    res.status(201).json({ task });
+    
+    const { data: task, error } = await supabase.from('tasks').insert([{
+      user_id: req.user.id,
+      title,
+      description,
+      subject,
+      priority,
+      due_date: dueDate ? new Date(dueDate).toISOString() : null,
+      estimated_hours: estimatedHours
+    }]).select().single();
+
+    if (error) throw error;
+
+    res.status(201).json({ task: mapTask(task) });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -32,15 +70,33 @@ router.post('/', protect, async (req, res) => {
 // PATCH /api/tasks/:id
 router.patch('/:id', protect, async (req, res) => {
   try {
-    const updates = req.body;
-    if (updates.status === 'completed') updates.completedAt = new Date();
-    const task = await Task.findOneAndUpdate(
-      { _id: req.params.id, userId: req.user._id },
-      updates,
-      { new: true }
-    );
+    const updates = { ...req.body };
+    let sbUpdates = {};
+    
+    if (updates.title !== undefined) sbUpdates.title = updates.title;
+    if (updates.description !== undefined) sbUpdates.description = updates.description;
+    if (updates.subject !== undefined) sbUpdates.subject = updates.subject;
+    if (updates.priority !== undefined) sbUpdates.priority = updates.priority;
+    if (updates.status !== undefined) sbUpdates.status = updates.status;
+    if (updates.dueDate !== undefined) sbUpdates.due_date = updates.dueDate ? new Date(updates.dueDate).toISOString() : null;
+    if (updates.estimatedHours !== undefined) sbUpdates.estimated_hours = updates.estimatedHours;
+    
+    if (updates.status === 'completed') {
+      sbUpdates.completed_at = new Date().toISOString();
+    }
+
+    const { data: task, error } = await supabase
+      .from('tasks')
+      .update(sbUpdates)
+      .eq('id', req.params.id)
+      .eq('user_id', req.user.id)
+      .select()
+      .single();
+
+    if (error && error.code !== 'PGRST116') throw error;
     if (!task) return res.status(404).json({ message: 'Task not found' });
-    res.json({ task });
+
+    res.json({ task: mapTask(task) });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -49,7 +105,13 @@ router.patch('/:id', protect, async (req, res) => {
 // DELETE /api/tasks/:id
 router.delete('/:id', protect, async (req, res) => {
   try {
-    await Task.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+    const { error } = await supabase
+      .from('tasks')
+      .delete()
+      .eq('id', req.params.id)
+      .eq('user_id', req.user.id);
+
+    if (error) throw error;
     res.json({ message: 'Task deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });
