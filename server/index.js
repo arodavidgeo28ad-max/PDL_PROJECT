@@ -7,10 +7,14 @@ dotenv.config();
 const app = express();
 
 app.use(cors({ 
-  origin: [
-    'http://localhost:5173', 
-    'https://pdl-project-git-main-arodavidgeo28ad-maxs-projects.vercel.app'
-  ], 
+  origin: (origin, callback) => {
+    // Allow localhost and any vercel.app domain
+    if (!origin || origin.includes('localhost') || origin.includes('vercel.app')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }, 
   credentials: true 
 }));
 app.use(express.json());
