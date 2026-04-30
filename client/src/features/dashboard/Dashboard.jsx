@@ -13,10 +13,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (user?.role === 'mentor') {
-      import('react-router-dom').then(({ Navigate }) => {
-        // Since we are in a functional component, we should handle this via Navigate or window.location
-        window.location.href = '/';
-      });
+      window.location.href = '/';
       return;
     }
     dashboardAPI.get().then(r => setData(r.data)).catch(console.error).finally(() => setLoading(false));

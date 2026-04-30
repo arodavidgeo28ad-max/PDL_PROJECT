@@ -110,6 +110,92 @@ router.get('/students', protect, async (req, res) => {
   }
 });
 
+// GET /api/directory/students-stress (mentor sees each student's latest stress data)
+router.get('/students-stress', protect, async (req, res) => {
+  try {
+    if (req.user.role !== 'mentor') return res.status(403).json({ message: 'Forbidden: Only mentors can access this' });
+
+    // Get all students assigned to this mentor
+    const { data: students, error: studentsError } = await supabase
+      .from('profiles')
+      .select('id, first_name, last_name, email, avatar')
+      .eq('mentor_id', req.user.id)
+      .eq('role', 'student')
+      .eq('is_active', true);
+
+    if (studentsError) throw studentsError;
+    if (!students || students.length === 0) return res.json({ students: [] });
+
+    const studentIds = students.map(s => s.id);
+
+    // Get latest stress report per student
+    const { data: stressReports, error: stressError } = await supabase
+      .from('stress_reports')
+      .select('user_id, stress_score, burnout_risk, burnout_percentage, contributing_factors, predictive_trend, created_at')
+      .in('user_id', studentIds)
+      .order('created_at', { ascending: false });
+
+    if (stressError) throw stressError;
+
+    // Get latest wellness entry per student (for notes/mood/reason)
+    const { data: wellnessEntries, error: wellnessError } = await supabase
+      .from('wellness_data')
+      .select('user_id, mood, notes, anxiety_level, recent_changes, sleep_hours, study_hours, exercise_hours, created_at')
+      .in('user_id', studentIds)
+      .order('created_at', { ascending: false });
+
+    if (wellnessError) throw wellnessError;
+
+    // Build map: latest report per student
+    const latestReportMap = {};
+    for (const report of (stressReports || [])) {
+      if (!latestReportMap[report.user_id]) {
+        latestReportMap[report.user_id] = report;
+      }
+    }
+
+    // Build map: latest wellness entry per student
+    const latestWellnessMap = {};
+    for (const entry of (wellnessEntries || [])) {
+      if (!latestWellnessMap[entry.user_id]) {
+        latestWellnessMap[entry.user_id] = entry;
+      }
+    }
+
+    // Merge
+    const result = students.map(s => {
+      const report = latestReportMap[s.id] || null;
+      const wellness = latestWellnessMap[s.id] || null;
+      return {
+        _id: s.id,
+        id: s.id,
+        firstName: s.first_name,
+        lastName: s.last_name,
+        email: s.email,
+        avatar: s.avatar,
+        stressScore: report?.stress_score ?? null,
+        burnoutRisk: report?.burnout_risk ?? null,
+        burnoutPercentage: report?.burnout_percentage ?? null,
+        contributingFactors: report?.contributing_factors || [],
+        predictiveTrend: report?.predictive_trend ?? null,
+        lastReportAt: report?.created_at ?? null,
+        mood: wellness?.mood ?? null,
+        notes: wellness?.notes ?? null,
+        anxietyLevel: wellness?.anxiety_level ?? null,
+        recentChanges: wellness?.recent_changes ?? null,
+        sleepHours: wellness?.sleep_hours ?? null,
+        studyHours: wellness?.study_hours ?? null,
+        exerciseHours: wellness?.exercise_hours ?? null,
+        lastCheckinAt: wellness?.created_at ?? null,
+      };
+    });
+
+    res.json({ students: result });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // POST /api/directory/kickout/:id
 router.post('/kickout/:id', protect, async (req, res) => {
   try {

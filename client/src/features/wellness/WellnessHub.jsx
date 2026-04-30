@@ -121,14 +121,32 @@ export default function WellnessHub() {
       if (resilience !== null) payload.resilienceScore = resilience;
       if (quizScore !== null) payload.pssScore = quizScore;
 
-      const res = await wellnessAPI.submit(payload);
-      await analysisAPI.analyze(res.data.wellness._id);
+      // Submit wellness data
+      const wellnessRes = await wellnessAPI.submit(payload);
+      const wellnessId = wellnessRes.data?.wellness?._id || wellnessRes.data?.wellness?.id;
+
+      if (!wellnessId) throw new Error('Wellness record created but ID missing in response.');
+
+      // Trigger AI analysis
+      await analysisAPI.analyze(wellnessId);
       setSuccess(true);
       setTimeout(() => navigate('/analysis'), 1800);
     } catch (err) {
       console.error('Submission error:', err);
-      const serverMsg = err.response?.data?.message || err.response?.data?.error?.message;
-      setError(serverMsg || 'Failed to submit. Please check your connection or database schema.');
+      // Extract best available error message
+      const status = err.response?.status;
+      const serverMsg =
+        err.response?.data?.message ||
+        err.response?.data?.error?.message ||
+        err.response?.data?.error ||
+        err.message;
+      if (status === 401) {
+        setError('Session expired. Please log out and log in again.');
+      } else if (status === 0 || !err.response) {
+        setError('Cannot reach the server. It may be starting up — please wait 30 seconds and try again.');
+      } else {
+        setError(serverMsg || `Server error (${status}). Please try again.`);
+      }
     }
     setSubmitting(false);
   };

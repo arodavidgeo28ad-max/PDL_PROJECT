@@ -95,6 +95,7 @@ export const directoryAPI = {
   mentor: (id) => api.get(`/directory/mentors/${id}`),
   myMentor: () => api.get('/directory/my-mentor'),
   students: () => api.get('/directory/students'),
+  studentsStress: () => api.get('/directory/students-stress'),
   kickout: (id) => api.post(`/directory/kickout/${id}`),
   join: (referralCode) => api.post('/directory/join', { referralCode }),
 };
