@@ -61,7 +61,15 @@ export default function MentorDashboard() {
     ]).catch(console.error).finally(() => setLoading(false));
 
     directoryAPI.studentsStress()
-      .then(r => setStudentStress(r.data.students))
+      .then(r => {
+        const students = r.data.students;
+        setStudentStress(students);
+        // Auto-expand first high-risk student (or first student)
+        const firstHighRisk = students.find(s => s.burnoutRisk === 'high');
+        const firstStudent  = students[0];
+        const toExpand = firstHighRisk || firstStudent;
+        if (toExpand) setExpandedStudent(toExpand._id);
+      })
       .catch(console.error)
       .finally(() => setStressLoading(false));
   }, []);
@@ -198,40 +206,32 @@ export default function MentorDashboard() {
                   {/* Expanded detail */}
                   {isExpanded && (
                     <div className={styles.expandedDetail} onClick={e => e.stopPropagation()}>
-                      {/* Contributing Factors */}
+                      {/* Contributing Factors — rendered as rich objects */}
                       {s.contributingFactors && s.contributingFactors.length > 0 && (
                         <div className={styles.detailBlock}>
                           <div className={styles.detailLabel}>
                             <span className="material-symbols-outlined" style={{ fontSize: 15, color: '#ffc107' }}>warning</span>
                             Contributing Factors
                           </div>
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-                            {s.contributingFactors.map((f, i) => (
-                              <span key={i} className={styles.factorTag}>{f}</span>
-                            ))}
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            {s.contributingFactors.map((f, i) => {
+                              // f can be a string OR an object {factor, impact, description, icon}
+                              const name   = typeof f === 'object' ? f.factor      : f;
+                              const desc   = typeof f === 'object' ? f.description : null;
+                              const impact = typeof f === 'object' ? f.impact      : null;
+                              return (
+                                <div key={i} className={styles.factorRow}>
+                                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                    <span className={styles.factorTag}>{name}</span>
+                                    {impact != null && (
+                                      <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#ffc107' }}>+{impact}% impact</span>
+                                    )}
+                                  </div>
+                                  {desc && <p style={{ margin: '0.25rem 0 0', fontSize: '0.75rem', color: 'var(--on-surface-variant)', lineHeight: 1.5 }}>{desc}</p>}
+                                </div>
+                              );
+                            })}
                           </div>
-                        </div>
-                      )}
-
-                      {/* Recent Changes / Reason */}
-                      {s.recentChanges && (
-                        <div className={styles.detailBlock}>
-                          <div className={styles.detailLabel}>
-                            <span className="material-symbols-outlined" style={{ fontSize: 15, color: 'var(--primary)' }}>change_circle</span>
-                            Recent Changes Reported
-                          </div>
-                          <p className={styles.detailText}>"{s.recentChanges}"</p>
-                        </div>
-                      )}
-
-                      {/* Notes */}
-                      {s.notes && (
-                        <div className={styles.detailBlock}>
-                          <div className={styles.detailLabel}>
-                            <span className="material-symbols-outlined" style={{ fontSize: 15, color: 'var(--secondary)' }}>note</span>
-                            Check-in Notes
-                          </div>
-                          <p className={styles.detailText}>"{s.notes}"</p>
                         </div>
                       )}
 
@@ -246,6 +246,28 @@ export default function MentorDashboard() {
                         </div>
                       )}
 
+                      {/* Recent Changes / Reason */}
+                      {s.recentChanges && s.recentChanges.trim() !== '' && (
+                        <div className={styles.detailBlock}>
+                          <div className={styles.detailLabel}>
+                            <span className="material-symbols-outlined" style={{ fontSize: 15, color: 'var(--primary)' }}>change_circle</span>
+                            Recent Changes Reported
+                          </div>
+                          <p className={styles.detailText}>"{s.recentChanges}"</p>
+                        </div>
+                      )}
+
+                      {/* Notes */}
+                      {s.notes && s.notes.trim() !== '' && (
+                        <div className={styles.detailBlock}>
+                          <div className={styles.detailLabel}>
+                            <span className="material-symbols-outlined" style={{ fontSize: 15, color: 'var(--secondary)' }}>note</span>
+                            Check-in Notes
+                          </div>
+                          <p className={styles.detailText}>"{s.notes}"</p>
+                        </div>
+                      )}
+
                       {/* Lifestyle Metrics */}
                       {(s.sleepHours != null || s.studyHours != null || s.exerciseHours != null) && (
                         <div className={styles.detailBlock}>
@@ -253,7 +275,7 @@ export default function MentorDashboard() {
                             <span className="material-symbols-outlined" style={{ fontSize: 15, color: 'var(--outline)' }}>bar_chart</span>
                             Lifestyle Metrics
                           </div>
-                          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '0.4rem' }}>
+                          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '0.4rem' }}>
                             {s.sleepHours != null && <div className={styles.metricPill}><span>😴</span> Sleep: <b>{s.sleepHours}h</b></div>}
                             {s.studyHours != null && <div className={styles.metricPill}><span>📚</span> Study: <b>{s.studyHours}h</b></div>}
                             {s.exerciseHours != null && <div className={styles.metricPill}><span>🏃</span> Exercise: <b>{s.exerciseHours}h</b></div>}
@@ -262,7 +284,7 @@ export default function MentorDashboard() {
                       )}
 
                       {/* No data at all */}
-                      {!s.stressScore && !s.recentChanges && !s.notes && s.contributingFactors.length === 0 && (
+                      {!s.stressScore && (!s.recentChanges || s.recentChanges.trim() === '') && (!s.notes || s.notes.trim() === '') && (!s.contributingFactors || s.contributingFactors.length === 0) && (
                         <p style={{ color: 'var(--outline)', fontSize: '0.8125rem', fontStyle: 'italic' }}>
                           This student hasn't submitted a wellness check-in yet.
                         </p>

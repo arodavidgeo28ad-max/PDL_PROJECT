@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://pdl-project-n04x.onrender.com/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://pdl-project-n04x.onrender.com/api',
 });
 
 // Attach JWT token to every request

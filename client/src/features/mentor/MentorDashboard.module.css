@@ -156,6 +156,13 @@
   text-transform: capitalize;
 }
 
+.factorRow {
+  background: rgba(255,193,7,0.06);
+  border: 1px solid rgba(255,193,7,0.12);
+  border-radius: 0.625rem;
+  padding: 0.6rem 0.75rem;
+}
+
 .metricPill {
   font-size: 0.75rem;
   color: var(--on-surface-variant);
